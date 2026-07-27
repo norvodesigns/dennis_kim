@@ -57,7 +57,7 @@
   --ease:cubic-bezier(.16,.84,.44,1);
   --ease-soft:cubic-bezier(.32,.72,0,1);
   --t-fast:.22s;
-  --t-slow:1.15s;
+  --t-slow:.92s;
 
   --navh:76px;
 }
@@ -291,8 +291,10 @@ em{font-style:italic}
   transition:opacity .3s var(--ease);
 }
 .wordmark:hover{opacity:.6}
-.site-nav.is-open .wordmark,
-.site-nav.is-closing .wordmark{opacity:0;pointer-events:none}
+.site-nav.is-open .wordmark{opacity:0;pointer-events:none;transition:opacity .2s linear}
+/* the header copy fades back in exactly as the drawer copy lands on it, so
+   the two cross-fade in place and the mark never blinks out */
+.site-nav.is-closing .wordmark{opacity:1;pointer-events:none;transition:opacity .22s linear .46s}
 
 .nav__links{display:flex;align-items:center;gap:clamp(22px,2.6vw,44px)}
 @media (max-width:899px){.nav__links{display:none}}
@@ -333,21 +335,43 @@ em{font-style:italic}
 .site-nav.is-open .burger span:nth-child(2){transform:translateY(-5px) rotate(-45deg)}
 
 /* ---------- drawer ---------- */
+/* The ink field lives on a pseudo-element rather than the drawer itself, so
+   the backdrop can fade independently of the wordmark riding on top of it.
+   That is what lets the mark stay solid all the way back to the header
+   instead of dissolving mid-flight. */
 .nav__drawer{
   position:fixed;inset:0;z-index:-1;
-  background:var(--ink);color:var(--snow);
+  color:var(--snow);
   display:flex;align-items:center;justify-content:center;
   padding:calc(var(--navh) + var(--s6)) var(--gut) var(--s8);
-  opacity:0;visibility:hidden;
-  transition:opacity .42s var(--ease),visibility 0s linear .42s;
+  visibility:hidden;
+  /* the drawer is fixed and full-bleed, so it must stop taking pointer
+     events the instant it starts closing or it swallows clicks on the page
+     behind it for the length of the exit */
+  pointer-events:none;
+  transition:visibility 0s linear 0s;
+}
+.nav__drawer::before{
+  content:'';position:absolute;inset:0;z-index:-1;
+  background:var(--ink);
+  opacity:0;
+  transition:opacity .42s var(--ease);
 }
 .site-nav.is-open .nav__drawer{
-  opacity:1;visibility:visible;
-  transition:opacity .42s var(--ease),visibility 0s linear 0s;
+  visibility:visible;
+  pointer-events:auto;
+  transition:visibility 0s linear 0s;
 }
+.site-nav.is-open .nav__drawer::before{opacity:1}
+/* on the way out the backdrop holds, then clears only once the mark has
+   landed — total 720ms, matching CLOSE_MS in site.js */
 .site-nav.is-closing .nav__drawer{
   visibility:visible;
-  transition:opacity .46s var(--ease),visibility 0s linear .46s;
+  transition:visibility 0s linear .72s;
+}
+.site-nav.is-closing .nav__drawer::before{
+  opacity:0;
+  transition:opacity .42s var(--ease) .30s;
 }
 .site-nav.is-open{color:var(--snow)}
 .site-nav.is-open.is-stuck,
@@ -364,8 +388,15 @@ em{font-style:italic}
   display:block;
   font-size:clamp(22px,6.6vw,34px);
   transform-origin:top left;
-  transition:transform .62s var(--ease);
+  opacity:0;
+  transition:transform .62s var(--ease),opacity .28s linear;
   will-change:transform;
+}
+.site-nav.is-open .drawer__mark{opacity:1}
+/* holds full strength for the whole 500ms flight home, then hands over */
+.site-nav.is-closing .drawer__mark{
+  opacity:0;
+  transition:transform .5s var(--ease),opacity .22s linear .46s;
 }
 .drawer__rule{
   display:block;width:1px;height:clamp(32px,7vh,64px);
@@ -424,7 +455,7 @@ body.nav-open .veil{background:var(--ink)}
    8. REVEALS — timed as phrases, never as jolts
    ============================================================ */
 [data-rv]{
-  opacity:0;transform:translateY(20px);
+  opacity:0;transform:translateY(14px);
   transition:opacity var(--t-slow) var(--ease) var(--d,0s),
              transform var(--t-slow) var(--ease) var(--d,0s);
 }
@@ -664,6 +695,19 @@ body.is-ready .hero__media{transform:scale(1.004)}
   .credit{flex-direction:column;gap:var(--s1)}
   .credit__m{text-align:left}
 }
+
+/* --- statistics --- */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--hair)}
+@media (max-width:760px){.stats{grid-template-columns:1fr}}
+.stat{background:var(--paper);padding:clamp(32px,3.4vw,48px) clamp(24px,2.4vw,36px)}
+.stat__n{
+  font:200 clamp(44px,5.4vw,78px)/1 var(--sans);
+  letter-spacing:.005em;
+  font-variant-numeric:tabular-nums;
+}
+.stat__l{margin-top:var(--s2);max-width:28ch}
+.on-ink .stats{background:var(--hair-d)}
+.on-ink .stat{background:var(--ink)}
 
 /* --- placements: where his students went --- */
 .placements{

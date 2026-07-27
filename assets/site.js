@@ -70,37 +70,78 @@
     leaveTo(a.href);
   });
 
-  /* ---------- 3. scroll reveals ---------- */
+  /* ---------- 3. scroll reveals ----------
+     A [data-stagger] group is one musical phrase: it is observed as a single
+     unit and its children are released together on their staggered delays.
+     Observing each child separately instead would make every element wait
+     for its own intersection while still carrying a delay meant to be
+     relative to the group — which reads as a stutter rather than a phrase.
+     Groups taller than the viewport fall back to per-element reveals, so a
+     long list never animates most of its rows off-screen. */
   var RV = '[data-rv], [data-rv-scale], .lines, .img-rv, .mark';
   var revealables = [].slice.call(document.querySelectorAll(RV));
 
   if (!('IntersectionObserver' in window) || reduce.matches) {
     revealables.forEach(function (el) { el.classList.add('in'); });
   } else {
+    var STEP = 0.075;
+
+    function release(el) {
+      el.classList.add('in');
+    }
+    function releaseGroup(group) {
+      var kids = [].slice.call(group.querySelectorAll(RV));
+      kids.forEach(function (el, i) {
+        if (!el.style.getPropertyValue('--d')) {
+          el.style.setProperty('--d', (i * STEP).toFixed(3) + 's');
+        }
+        release(el);
+      });
+    }
+
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
-        entry.target.classList.add('in');
-        io.unobserve(entry.target);
+        var el = entry.target;
+        io.unobserve(el);
+        if (el.hasAttribute('data-stagger')) releaseGroup(el);
+        else release(el);
       });
-    }, { rootMargin: '0px 0px -11% 0px', threshold: 0.06 });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.05 });
+
+    // decide which groups can be phrased as a unit
+    var phrased = [];
+    [].slice.call(document.querySelectorAll('[data-stagger]')).forEach(function (g) {
+      if (g.getBoundingClientRect().height <= window.innerHeight * 1.1) {
+        phrased.push(g);
+        io.observe(g);
+      }
+    });
+    function inPhrasedGroup(el) {
+      for (var i = 0; i < phrased.length; i++) if (phrased[i].contains(el)) return true;
+      return false;
+    }
 
     revealables.forEach(function (el) {
-      // stagger siblings that opt in — phrasing, not a single hit
-      var group = el.closest('[data-stagger]');
+      if (inPhrasedGroup(el)) return;          // its group will release it
+      var group = el.closest('[data-stagger]'); // tall group: keep the delay ordering
       if (group && !el.style.getPropertyValue('--d')) {
         var kids = [].slice.call(group.querySelectorAll(RV));
         var i = kids.indexOf(el);
-        if (i > -1) el.style.setProperty('--d', (i * 0.085).toFixed(3) + 's');
+        if (i > -1) el.style.setProperty('--d', ((i % 4) * STEP).toFixed(3) + 's');
       }
       io.observe(el);
     });
 
     // anything already above the fold on load reveals immediately
     requestAnimationFrame(function () {
+      phrased.forEach(function (g) {
+        var r = g.getBoundingClientRect();
+        if (r.top < window.innerHeight * 0.92 && r.bottom > 0) { io.unobserve(g); releaseGroup(g); }
+      });
       revealables.forEach(function (el) {
         var r = el.getBoundingClientRect();
-        if (r.top < window.innerHeight * 0.92 && r.bottom > 0) el.classList.add('in');
+        if (r.top < window.innerHeight * 0.92 && r.bottom > 0) release(el);
       });
     });
   }
@@ -149,7 +190,10 @@
     var hdrMark = nav.querySelector('.wordmark');
     var drwMark = nav.querySelector('.drawer__mark');
     var closeTimer = null;
-    var CLOSE_MS = 640;
+    // must match the closing choreography in site.css: the mark flies home in
+    // 500ms, the backdrop clears at 720ms, and the header copy fades back in
+    // across the handover at 460–680ms
+    var CLOSE_MS = 740;
 
     /* Measure the transform that lays the drawer mark exactly over the
        header mark. Both share family, weight and an em-based letter-spacing,
@@ -273,7 +317,36 @@
     });
   }
 
-  /* ---------- 7. current year ---------- */
+  /* ---------- 7. counters ---------- */
+  var counters = [].slice.call(document.querySelectorAll('[data-count]'));
+  if (counters.length) {
+    if (reduce.matches || !('IntersectionObserver' in window)) {
+      counters.forEach(function (el) { el.textContent = el.dataset.count; });
+    } else {
+      var cio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var el = entry.target;
+          cio.unobserve(el);
+          var target = parseInt(el.dataset.count, 10);
+          if (isNaN(target)) { el.textContent = el.dataset.count; return; }
+          var dur = 1250, t0 = null;
+          function step(ts) {
+            if (t0 === null) t0 = ts;
+            var p = Math.min((ts - t0) / dur, 1);
+            var eased = 1 - Math.pow(1 - p, 4);
+            el.textContent = Math.round(target * eased);
+            if (p < 1) requestAnimationFrame(step);
+            else el.textContent = target;
+          }
+          requestAnimationFrame(step);
+        });
+      }, { threshold: 0.5 });
+      counters.forEach(function (el) { el.textContent = '0'; cio.observe(el); });
+    }
+  }
+
+  /* ---------- 8. current year ---------- */
   var yrs = document.querySelectorAll('[data-year]');
   if (yrs.length) {
     var y = String(new Date().getFullYear());
