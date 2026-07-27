@@ -872,18 +872,6 @@ body.is-ready .hero__media{transform:scale(1.004)}
 .route__d{font:400 15px/1.6 var(--text);color:var(--snow-78);flex:1}
 .route .ln{margin-top:var(--s1);color:var(--snow)}
 
-/* --- pull quote ---
-   NB: the measure must NOT be set in `ch` on this wrapper — `ch` resolves
-   against the wrapper's own inherited (small, sans) font, not the display
-   face inside it, which collapses the quote into a narrow column. */
-.quote{max-width:min(100%,880px)}
-.quote__t{
-  font:300 clamp(26px,3.2vw,48px)/1.18 var(--display);
-  font-style:italic;letter-spacing:-.018em;
-  text-wrap:pretty;
-}
-.quote__a{margin-top:var(--s4);display:block}
-
 /* ============================================================
    11. FOOTER — one black field, blended, on every page
    ============================================================ */
