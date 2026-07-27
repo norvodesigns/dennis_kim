@@ -714,9 +714,10 @@ body.is-ready .hero__media{transform:scale(1.004)}
   display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
   gap:clamp(40px,5vw,96px);
 }
-.placement__h{display:flex;flex-direction:column;gap:var(--s2);margin-bottom:var(--s4)}
-.placement__t{font:300 clamp(24px,2.4vw,34px)/1.2 var(--display);letter-spacing:-.014em}
-.placement__t em{font-style:italic}
+/* the column heads stay small caps: the section already carries one display
+   heading, and a second tier of display type here reads as a duplicate once
+   the rail stacks above the content on narrow screens */
+.placement__h{margin-bottom:var(--s3)}
 .placement__l{border-top:1px solid var(--hair)}
 .placement__l li{
   font:400 clamp(15.5px,1.2vw,18px)/1.4 var(--text);
@@ -726,7 +727,6 @@ body.is-ready .hero__media{transform:scale(1.004)}
 }
 .on-ink .placement__l{border-top-color:var(--hair-d)}
 .on-ink .placement__l li{color:var(--snow-78);border-bottom-color:var(--hair-d-soft)}
-.on-ink .placement__t{color:var(--snow)}
 
 /* --- gateway cards --- */
 .gates{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--hair)}

@@ -84,66 +84,97 @@
   if (!('IntersectionObserver' in window) || reduce.matches) {
     revealables.forEach(function (el) { el.classList.add('in'); });
   } else {
-    var STEP = 0.075;
+    var STEP = 0.05;      // stagger between siblings
+    var MAX_D = 0.3;      // never hold the tail of a phrase longer than this
+    var LEAD = 0.2;       // start a reveal this far (in viewports) below the fold
 
-    function release(el) {
-      el.classList.add('in');
-    }
+    function release(el) { el.classList.add('in'); }
+
     function releaseGroup(group) {
       var kids = [].slice.call(group.querySelectorAll(RV));
       kids.forEach(function (el, i) {
         if (!el.style.getPropertyValue('--d')) {
-          el.style.setProperty('--d', (i * STEP).toFixed(3) + 's');
+          el.style.setProperty('--d', Math.min(i * STEP, MAX_D).toFixed(3) + 's');
         }
         release(el);
       });
     }
 
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        var el = entry.target;
-        io.unobserve(el);
-        if (el.hasAttribute('data-stagger')) releaseGroup(el);
-        else release(el);
-      });
-    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.05 });
+    /* One queue, two triggers. Each entry fires exactly once, whichever
+       trigger reaches it first. */
+    var queue = [];
+    function fire(entry) {
+      if (entry.done) return;
+      entry.done = true;
+      io.unobserve(entry.el);
+      if (entry.group) releaseGroup(entry.el); else release(entry.el);
+    }
 
-    // decide which groups can be phrased as a unit
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        for (var i = 0; i < queue.length; i++) {
+          if (queue[i].el === e.target) { fire(queue[i]); break; }
+        }
+      });
+      // start the reveal before the element reaches the fold, so the motion
+      // is already under way by the time it is actually looked at
+    }, { rootMargin: '0px 0px ' + Math.round(LEAD * 100) + '% 0px', threshold: 0 });
+
+    // groups short enough to read as one phrase are released as a unit;
+    // taller ones fall back to per-element so a long list never animates
+    // most of its rows off-screen
     var phrased = [];
     [].slice.call(document.querySelectorAll('[data-stagger]')).forEach(function (g) {
-      if (g.getBoundingClientRect().height <= window.innerHeight * 1.1) {
-        phrased.push(g);
-        io.observe(g);
-      }
+      if (g.getBoundingClientRect().height <= window.innerHeight * 1.1) phrased.push(g);
     });
     function inPhrasedGroup(el) {
       for (var i = 0; i < phrased.length; i++) if (phrased[i].contains(el)) return true;
       return false;
     }
 
+    phrased.forEach(function (g) { queue.push({ el: g, group: true, done: false }); });
     revealables.forEach(function (el) {
-      if (inPhrasedGroup(el)) return;          // its group will release it
-      var group = el.closest('[data-stagger]'); // tall group: keep the delay ordering
+      if (inPhrasedGroup(el)) return;           // its group will release it
+      var group = el.closest('[data-stagger]'); // tall group: keep delay ordering
       if (group && !el.style.getPropertyValue('--d')) {
         var kids = [].slice.call(group.querySelectorAll(RV));
         var i = kids.indexOf(el);
         if (i > -1) el.style.setProperty('--d', ((i % 4) * STEP).toFixed(3) + 's');
       }
-      io.observe(el);
+      queue.push({ el: el, group: false, done: false });
     });
+    queue.forEach(function (q) { io.observe(q.el); });
 
-    // anything already above the fold on load reveals immediately
-    requestAnimationFrame(function () {
-      phrased.forEach(function (g) {
-        var r = g.getBoundingClientRect();
-        if (r.top < window.innerHeight * 0.92 && r.bottom > 0) { io.unobserve(g); releaseGroup(g); }
-      });
-      revealables.forEach(function (el) {
-        var r = el.getBoundingClientRect();
-        if (r.top < window.innerHeight * 0.92 && r.bottom > 0) release(el);
-      });
-    });
+    /* Safety net.
+       iOS throttles IntersectionObserver callbacks during momentum scrolling,
+       so a fling outruns the observer and the reveal lands after the element
+       is already in view — which reads as things snapping into existence
+       rather than animating. This rAF pass is keyed off scroll instead, and
+       whichever trigger gets there first wins. Reads are batched ahead of
+       writes so the sweep never thrashes layout. */
+    var sweeping = false;
+    function sweep() {
+      sweeping = false;
+      if (!queue.length) return;
+      var line = window.innerHeight * (1 + LEAD);
+      var due = [], still = [];
+      for (var i = 0; i < queue.length; i++) {
+        var q = queue[i];
+        if (q.done) continue;
+        var r = q.el.getBoundingClientRect();
+        if (r.top < line) due.push(q); else still.push(q);
+      }
+      for (var j = 0; j < due.length; j++) fire(due[j]);
+      queue = still;
+      if (!queue.length) window.removeEventListener('scroll', onScrollRv);
+    }
+    function onScrollRv() {
+      if (!sweeping) { sweeping = true; requestAnimationFrame(sweep); }
+    }
+    window.addEventListener('scroll', onScrollRv, { passive: true });
+    window.addEventListener('resize', onScrollRv, { passive: true });
+    requestAnimationFrame(sweep);   // covers whatever is on screen at load
   }
 
   /* ---------- 4. nav: stuck + dark-over-hero ---------- */
