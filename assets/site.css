@@ -240,22 +240,31 @@ em{font-style:italic}
 /* ============================================================
    6. NAV
    ============================================================ */
+/* Going from light-on-dark to dark-on-light cannot be done as a colour
+   blend: any interpolation between the two passes through mid-grey text on
+   a mid-grey field, where contrast falls to nothing. A long cross-fade is
+   what makes the handover read as broken. So the inversion is a step, taken
+   fast, at the moment the backdrop's own luminance crosses halfway — the
+   point where the outgoing and incoming colours have equal contrast and the
+   swap costs the least. site.js finds that moment from the seam ramp and
+   applies hysteresis so it cannot flicker. The panel is what carries the
+   sense of motion: it settles over three times as long as the text swaps. */
 .site-nav{
   position:fixed;inset:0 0 auto 0;z-index:80;
   height:var(--navh);
   display:flex;align-items:center;
   padding-inline:var(--gut);
   color:var(--ink);
-  transition:background-color .5s var(--ease),color .5s var(--ease),height .5s var(--ease);
+  transition:background-color .05s linear,color .05s linear,height .5s var(--ease);
 }
 .site-nav::after{
   content:'';position:absolute;left:0;right:0;bottom:0;height:1px;
   background:var(--hair);
   transform:scaleY(0);transform-origin:bottom;
-  transition:transform .5s var(--ease),background-color .5s var(--ease),opacity .3s var(--ease);
+  transition:transform .5s var(--ease),background-color .05s linear,opacity .3s var(--ease);
 }
 .site-nav.is-stuck{
-  background:rgba(250,249,247,.90);
+  background:rgba(250,249,247,.92);
   backdrop-filter:saturate(150%) blur(16px);
   -webkit-backdrop-filter:saturate(150%) blur(16px);
 }
@@ -264,7 +273,7 @@ em{font-style:italic}
 .site-nav.on-dark::after{background:var(--hair-d)}
 /* over an ink field the collapsed bar has to be ink too, or it reads as a
    white slab laid across the black */
-.site-nav.is-stuck.on-dark{background:rgba(11,11,12,.88)}
+.site-nav.is-stuck.on-dark{background:rgba(11,11,12,.92)}
 /* elegant collapse: the bar tightens once you have left the top */
 @media (min-width:900px){
   .site-nav.is-stuck{height:72px}

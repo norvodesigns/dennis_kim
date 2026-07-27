@@ -238,19 +238,57 @@
     // every ink field the bar can pass over: the hero, the dark bands, the footer
     var darkZones = [].slice.call(document.querySelectorAll('.hero, .band, .site-foot'));
 
+    /* Measure --seam rather than re-deriving its clamp() in script, so the
+       colour ramp can never drift out of step with the CSS one. */
+    var seamProbe = document.createElement('div');
+    seamProbe.style.cssText =
+      'position:absolute;top:0;left:0;width:0;visibility:hidden;pointer-events:none;height:var(--seam)';
+    document.body.appendChild(seamProbe);
+
+    // the hero cuts straight to paper with no seam, so give the handover a
+    // short synthetic ramp of its own rather than letting it snap
+    var HERO_RAMP = 84;
+
+    function smooth(t) {
+      t = t < 0 ? 0 : t > 1 ? 1 : t;
+      return t * t * (3 - 2 * t);
+    }
+
+    /* How dark the backdrop is at viewport height `y`: 1 inside an ink
+       field, easing to 0 across that field's seam. */
+    function darknessAt(y, seam) {
+      var d = 0;
+      for (var i = 0; i < darkZones.length; i++) {
+        var el = darkZones[i];
+        var r = el.getBoundingClientRect();
+        if (!r.height) continue;
+        var ramp = el.classList.contains('hero') ? HERO_RAMP : seam;
+        var v;
+        if (y >= r.top && y <= r.bottom) v = 1;
+        else if (y < r.top) v = smooth(1 - (r.top - y) / ramp);
+        else v = smooth(1 - (y - r.bottom) / ramp);
+        if (v > d) d = v;
+      }
+      return d;
+    }
+
+    /* Invert at the halfway point of the backdrop's own ramp, with a dead
+       band either side so a slow scroll sitting on the boundary cannot
+       oscillate. */
+    var isDark = nav.classList.contains('on-dark');
+
     function syncNav() {
       ticking = false;
       var y = window.scrollY || window.pageYOffset;
       var line = navH * 0.55;
+      var nd = darknessAt(line, seamProbe.offsetHeight || 120);
 
-      var onDark = darkZones.some(function (el) {
-        var r = el.getBoundingClientRect();
-        return r.top <= line && r.bottom >= line;
-      });
+      if (isDark && nd < 0.42) isDark = false;
+      else if (!isDark && nd > 0.58) isDark = true;
+      nav.classList.toggle('on-dark', isDark);
+
       // the hero is the one dark field the bar floats over without a backing
       var overHero = !!hero && hero.getBoundingClientRect().bottom > navH * 0.62;
-
-      nav.classList.toggle('on-dark', onDark);
       nav.classList.toggle('is-stuck', !overHero && y > 8);
     }
     function onScroll() {
