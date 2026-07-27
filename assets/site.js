@@ -195,19 +195,37 @@
     // across the handover at 460–680ms
     var CLOSE_MS = 740;
 
-    /* Measure the transform that lays the drawer mark exactly over the
-       header mark. Both share family, weight and an em-based letter-spacing,
-       so a single uniform scale matches them precisely. */
+    /* The glyphs are what the eye tracks, so the move has to be measured from
+       the text boxes — not the element boxes. The header wordmark carries
+       16px of vertical padding for its hit area, so matching element boxes
+       would land the drawer copy a padding's height too high and leave it to
+       snap into place at the handover. A Range over the contents gives the
+       real inked box on both sides. */
+    function textRect(el) {
+      var r = document.createRange();
+      r.selectNodeContents(el);
+      var rect = r.getBoundingClientRect();
+      return (rect && rect.width) ? rect : el.getBoundingClientRect();
+    }
+
+    /* Both marks share family, weight and an em-based letter-spacing, so one
+       uniform scale matches them. transform-origin is the element's top-left,
+       which is not necessarily the text's top-left, so the translation is
+       solved for explicitly rather than assumed. */
     function restingTransform() {
       if (!hdrMark || !drwMark) return '';
       drwMark.style.transition = 'none';
       drwMark.style.transform = 'none';
-      var b = drwMark.getBoundingClientRect();
-      var a = hdrMark.getBoundingClientRect();
+
+      var eb = drwMark.getBoundingClientRect();  // element box, the origin
+      var b = textRect(drwMark);                 // its inked box
+      var a = textRect(hdrMark);                 // where that box must land
       if (!b.width || !a.width) return '';
+
       var s = a.width / b.width;
-      return 'translate(' + (a.left - b.left).toFixed(2) + 'px,' +
-             (a.top - b.top).toFixed(2) + 'px) scale(' + s.toFixed(4) + ')';
+      var dx = a.left - eb.left - s * (b.left - eb.left);
+      var dy = a.top - eb.top - s * (b.top - eb.top);
+      return 'translate(' + dx.toFixed(2) + 'px,' + dy.toFixed(2) + 'px) scale(' + s.toFixed(4) + ')';
     }
 
     /* Pin the mark at `t` with transitions OFF, force the browser to commit
@@ -241,13 +259,17 @@
     }
 
     function close() {
+      // Restore document scrolling BEFORE measuring. Releasing `nav-open`
+      // brings the scrollbar back, which narrows the viewport and shifts the
+      // header; measuring first would aim the mark at a stale target.
+      body.classList.remove('nav-open');
+
       var end = reduce.matches ? '' : restingTransform();
       // the mark is sitting at its resting pose; commit that, then release
       commitThenRelease('none');
 
       nav.classList.add('is-closing');
       nav.classList.remove('is-open');
-      body.classList.remove('nav-open');
       burger.setAttribute('aria-expanded', 'false');
       if (drawer) drawer.setAttribute('aria-hidden', 'true');
 
