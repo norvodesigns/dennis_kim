@@ -88,7 +88,31 @@
     var MAX_D = 0.3;      // never hold the tail of a phrase longer than this
     var LEAD = 0.2;       // start a reveal this far (in viewports) below the fold
 
-    function release(el) { el.classList.add('in'); }
+    var IMG_WAIT = 2200;   // never hold a curtain up longer than this
+
+    /* An .img-rv wipes a curtain off the photograph. If the photograph has
+       not decoded yet the curtain comes off an empty box and the picture
+       pops in a beat later, which is the single most broken-looking moment
+       on a slow connection. So the wipe waits for pixels — with a timeout so
+       a stalled or failed image can never leave the curtain up. */
+    function release(el) {
+      if (el.classList.contains('img-rv')) {
+        var img = el.querySelector('img');
+        if (img && !img.complete) {
+          var fired = false;
+          var go = function () {
+            if (fired) return;
+            fired = true;
+            el.classList.add('in');
+          };
+          img.addEventListener('load', go, { once: true });
+          img.addEventListener('error', go, { once: true });
+          setTimeout(go, IMG_WAIT);
+          return;
+        }
+      }
+      el.classList.add('in');
+    }
 
     function releaseGroup(group) {
       var kids = [].slice.call(group.querySelectorAll(RV));
@@ -153,11 +177,30 @@
        rather than animating. This rAF pass is keyed off scroll instead, and
        whichever trigger gets there first wins. Reads are batched ahead of
        writes so the sweep never thrashes layout. */
+    // photographs still waiting to be fetched, so they can be given a head
+    // start well before their curtain is due to lift
+    var lazyImgs = [].slice.call(document.querySelectorAll('.img-rv img[loading="lazy"]'));
+
     var sweeping = false;
     function sweep() {
       sweeping = false;
+      var vh = window.innerHeight;
+
+      // start fetching a good two viewports out, so that by the time the
+      // curtain is due the pixels are usually already there
+      if (lazyImgs.length) {
+        var keep = [];
+        for (var k = 0; k < lazyImgs.length; k++) {
+          var im = lazyImgs[k];
+          if (im.complete) continue;
+          if (im.getBoundingClientRect().top < vh * 2.5) im.loading = 'eager';
+          else keep.push(im);
+        }
+        lazyImgs = keep;
+      }
+
       if (!queue.length) return;
-      var line = window.innerHeight * (1 + LEAD);
+      var line = vh * (1 + LEAD);
       var due = [], still = [];
       for (var i = 0; i < queue.length; i++) {
         var q = queue[i];
@@ -167,14 +210,22 @@
       }
       for (var j = 0; j < due.length; j++) fire(due[j]);
       queue = still;
-      if (!queue.length) window.removeEventListener('scroll', onScrollRv);
+      if (!queue.length && !lazyImgs.length) window.removeEventListener('scroll', onScrollRv);
     }
     function onScrollRv() {
       if (!sweeping) { sweeping = true; requestAnimationFrame(sweep); }
     }
     window.addEventListener('scroll', onScrollRv, { passive: true });
     window.addEventListener('resize', onScrollRv, { passive: true });
-    requestAnimationFrame(sweep);   // covers whatever is on screen at load
+
+    /* Hold the first sweep until the entry veil has begun to clear. Firing it
+       at parse time means everything above the fold animates behind the veil
+       and is simply present by the time the page is visible — which is what
+       makes a first screenful look like it has no motion at all. */
+    function firstSweep() { requestAnimationFrame(sweep); }
+    if (document.readyState === 'complete') setTimeout(firstSweep, 220);
+    else window.addEventListener('load', function () { setTimeout(firstSweep, 220); });
+    setTimeout(firstSweep, 1500);   // failsafe; sweep is idempotent
   }
 
   /* ---------- 4. nav: stuck + dark-over-hero ---------- */

@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Working files kept in the repository but not part of the published site
+Disallow: /Dennis_Kim_Source_of_Truth.md
+Disallow: /Mr.%20Kim%20pictures/
+
+Sitemap: https://norvodesigns.github.io/dennis_kim/sitemap.xml
