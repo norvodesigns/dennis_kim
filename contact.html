@@ -7,9 +7,9 @@
 <meta name="description" content="Enquiries for concert engagements, guest concertmaster appearances, studio lessons and press. Based in Irvine, California.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400&family=EB+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.remove('no-js')</script>
-<link rel="stylesheet" href="assets/site.css?v=d19c3e02">
+<link rel="stylesheet" href="assets/site.css?v=7a1f4d30">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -29,14 +29,17 @@
       <span></span><span></span>
     </button>
     <div class="nav__drawer" id="drawer" aria-hidden="true">
-      <nav aria-label="Primary mobile">
-        <a class="drawer__link" style="--i:0" href="index.html">Home</a>
-        <a class="drawer__link" style="--i:1" href="biography.html">Biography</a>
-        <a class="drawer__link" style="--i:2" href="performance.html">Performance</a>
-        <a class="drawer__link" style="--i:3" href="teaching.html">Teaching</a>
-        <a class="drawer__link" style="--i:4" href="contact.html" aria-current="page">Contact</a>
-      </nav>
-      <p class="drawer__meta meta">Irvine, California</p>
+      <div class="drawer__inner">
+        <span class="drawer__mark" aria-hidden="true">Dennis&nbsp;Kim</span>
+        <span class="drawer__rule" aria-hidden="true"></span>
+        <nav class="drawer__nav" aria-label="Primary mobile">
+          <a class="drawer__link" style="--i:0" href="index.html">Home</a>
+          <a class="drawer__link" style="--i:1" href="biography.html">Biography</a>
+          <a class="drawer__link" style="--i:2" href="performance.html">Performance</a>
+          <a class="drawer__link" style="--i:3" href="teaching.html">Teaching</a>
+          <a class="drawer__link" style="--i:4" href="contact.html" aria-current="page">Contact</a>
+        </nav>
+      </div>
     </div>
   </div>
 </header>
@@ -45,9 +48,10 @@
 
   <!-- ===== MASTHEAD ===== -->
   <section class="masthead wrap">
+    <hr class="mark">
     <span class="eyebrow">04 — Contact</span>
-    <h1 class="display d-lg lines">
-      <span class="line"><i>Enquiries.</i></span>
+    <h1 class="display d-lg lines lines--it">
+      <span class="line"><i><em>Enquiries.</em></i></span>
     </h1>
     <p class="lede measure masthead__lede" data-rv style="--d:.2s">Concert engagements, guest concertmaster appearances, studio lessons and press. Based in Irvine, California.</p>
   </section>
@@ -55,24 +59,36 @@
   <!-- ===== ROUTES ===== -->
   <section class="band on-ink">
     <div class="section wrap">
-      <div class="routes" data-stagger>
-        <div class="route" data-rv>
-          <p class="eyebrow" style="color:var(--snow-38)">Orchestral</p>
-          <p class="route__t">Pacific Symphony</p>
-          <p class="route__d">Concertmaster, Eleanor and Michael Gordon Chair. Season and engagement enquiries.</p>
-          <a class="ln" href="https://www.pacificsymphony.org/" target="_blank" rel="noopener">pacificsymphony.org</a>
+      <div class="split">
+        <div class="split__rail">
+          <hr class="mark mark--short" style="margin-bottom:var(--s3)">
+          <p class="eyebrow">Where to write</p>
         </div>
-        <div class="route" data-rv>
-          <p class="eyebrow" style="color:var(--snow-38)">Academic</p>
-          <p class="route__t">UC Irvine</p>
-          <p class="route__d">Assistant Professor of Violin, Claire Trevor School of the Arts. Studio and lesson enquiries.</p>
-          <a class="ln" href="https://music.arts.uci.edu/" target="_blank" rel="noopener">music.arts.uci.edu</a>
-        </div>
-        <div class="route" data-rv>
-          <p class="eyebrow" style="color:var(--snow-38)">Chamber</p>
-          <p class="route__t">Trio Barclay</p>
-          <p class="route__d">Ensemble-in-Residence at the Irvine Barclay Theatre, with Jonah Kim and Sean Kennard.</p>
-          <a class="ln" href="https://thebarclay.org/" target="_blank" rel="noopener">thebarclay.org</a>
+        <div data-stagger>
+          <h2 class="display d-md lines lines--it measure-sm" style="margin-bottom:clamp(40px,4.4vw,64px)">
+            <span class="line"><i><em>Three doors, depending</em></i></span>
+            <span class="line"><i><em>on the question.</em></i></span>
+          </h2>
+          <div class="routes">
+            <div class="route" data-rv>
+              <p class="eyebrow">Orchestral</p>
+              <p class="route__t">Pacific Symphony</p>
+              <p class="route__d">Concertmaster, Eleanor and Michael Gordon Chair. Season and engagement enquiries.</p>
+              <a class="ln" href="https://www.pacificsymphony.org/" target="_blank" rel="noopener">pacificsymphony.org</a>
+            </div>
+            <div class="route" data-rv>
+              <p class="eyebrow">Academic</p>
+              <p class="route__t">UC Irvine</p>
+              <p class="route__d">Assistant Professor of Violin, Claire Trevor School of the Arts. Studio and lesson enquiries.</p>
+              <a class="ln" href="https://music.arts.uci.edu/" target="_blank" rel="noopener">music.arts.uci.edu</a>
+            </div>
+            <div class="route" data-rv>
+              <p class="eyebrow">Chamber</p>
+              <p class="route__t">Trio Barclay</p>
+              <p class="route__d">Ensemble-in-Residence at the Irvine Barclay Theatre, with Jonah Kim and Sean Kennard.</p>
+              <a class="ln" href="https://thebarclay.org/" target="_blank" rel="noopener">thebarclay.org</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -81,92 +97,110 @@
   <!-- ===== DIRECT ===== -->
   <section class="section wrap">
     <div class="split">
-      <p class="eyebrow split__rail">Direct</p>
+      <div class="split__rail">
+        <hr class="mark mark--short" style="margin-bottom:var(--s3)">
+        <p class="eyebrow">Direct</p>
+      </div>
       <div data-stagger>
-        <h2 class="display d-md lines measure-sm">
-          <span class="line"><i>Or write directly.</i></span>
+        <h2 class="display d-md lines lines--it measure-sm">
+          <span class="line"><i><em>Or write directly.</em></i></span>
         </h2>
-        <p class="body measure" data-rv style="margin-top:26px">For press, recordings and everything else, a direct address can be listed here.</p>
-        <p data-rv style="margin-top:clamp(26px,3.2vw,38px)">
+        <p class="body measure" data-rv style="margin-top:var(--s4)">For press, recordings and everything else, a direct address will be listed here.</p>
+        <p data-rv style="margin-top:clamp(28px,3.2vw,40px)">
           <a class="ln" href="mailto:hello@example.com">hello@example.com</a>
         </p>
-        <p class="meta" data-rv style="margin-top:18px">Placeholder — replace with the preferred contact address before launch.</p>
+        <p class="meta" data-rv style="margin-top:var(--s3);max-width:52ch">To be confirmed &mdash; this placeholder address must be replaced with the preferred contact before launch.</p>
       </div>
     </div>
   </section>
 
   <!-- ===== ROLES ===== -->
-  <section class="section--tight wrap">
+  <section class="section wrap">
     <div class="split">
-      <p class="eyebrow split__rail">Current roles</p>
-      <div class="rows" data-stagger>
-        <div class="row" data-rv>
-          <span class="row__k">Orchestra</span>
-          <span class="row__t">Pacific Symphony</span>
-          <span class="row__n">Concertmaster · Gordon Chair</span>
-        </div>
-        <div class="row" data-rv>
-          <span class="row__k">University</span>
-          <span class="row__t">University of California, Irvine</span>
-          <span class="row__n">Assistant Professor of Violin</span>
-        </div>
-        <div class="row" data-rv>
-          <span class="row__k">Chamber</span>
-          <span class="row__t">Trio Barclay</span>
-          <span class="row__n">Irvine Barclay Theatre</span>
-        </div>
-        <div class="row" data-rv>
-          <span class="row__k">Summer</span>
-          <span class="row__t">Peninsula Festival Orchestra</span>
-          <span class="row__n">Concertmaster · Door County, Wisconsin</span>
-        </div>
-        <div class="row" data-rv>
-          <span class="row__k">Summer</span>
-          <span class="row__t">Interlochen Arts Camp</span>
-          <span class="row__n">Valade Concertmaster</span>
+      <div class="split__rail">
+        <hr class="mark mark--short" style="margin-bottom:var(--s3)">
+        <p class="eyebrow">Current roles</p>
+      </div>
+      <div>
+        <h2 class="display d-md lines lines--it" style="margin-bottom:clamp(32px,3.6vw,48px)">
+          <span class="line"><i><em>Where to find him.</em></i></span>
+        </h2>
+        <div class="rows rows--hover" data-stagger>
+          <div class="row" data-rv>
+            <span class="row__k">Orchestra</span>
+            <span class="row__t">Pacific Symphony</span>
+            <span class="row__n">Concertmaster · Gordon Chair</span>
+          </div>
+          <div class="row" data-rv>
+            <span class="row__k">University</span>
+            <span class="row__t">University of California, Irvine</span>
+            <span class="row__n">Assistant Professor of Violin</span>
+          </div>
+          <div class="row" data-rv>
+            <span class="row__k">Chamber</span>
+            <span class="row__t">Trio Barclay</span>
+            <span class="row__n">Irvine Barclay Theatre</span>
+          </div>
+          <div class="row" data-rv>
+            <span class="row__k">Summer</span>
+            <span class="row__t">Peninsula Festival Orchestra</span>
+            <span class="row__n">Concertmaster · Door County, Wisconsin</span>
+          </div>
+          <div class="row" data-rv>
+            <span class="row__k">Summer</span>
+            <span class="row__t">Interlochen Arts Camp</span>
+            <span class="row__n">Valade Concertmaster</span>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ===== CLOSING ===== -->
-  <hr class="rule">
-  <section class="section--tight wrap">
-    <div class="duo">
-      <h2 class="display d-sm lines"><span class="line"><i>Thank you for visiting.</i></span></h2>
-      <p data-rv style="justify-self:start"><a class="ln" href="index.html">&#8592; Back to the beginning</a></p>
-    </div>
+  <section class="section wrap" style="text-align:center">
+    <hr class="mark mark--center mark--short" style="margin:0 auto clamp(32px,3.6vw,48px)">
+    <h2 class="display d-md lines lines--it" style="margin-inline:auto">
+      <span class="line"><i><em>Thank you for visiting.</em></i></span>
+    </h2>
+    <p data-rv style="margin-top:clamp(32px,3.6vw,48px)"><a class="ln" href="index.html">&#8592; Back to the beginning</a></p>
   </section>
 
 </main>
 
 <footer class="site-foot">
-  <div class="wrap foot__grid">
-    <div class="foot__col">
-      <a class="wordmark" href="index.html" style="color:var(--ink)">Dennis&nbsp;Kim</a>
-      <p class="foot__note" style="margin-top:6px">Concertmaster, Pacific Symphony<br>Eleanor and Michael Gordon Chair</p>
+  <div class="wrap">
+    <hr class="mark foot__mark">
+    <div class="foot__grid">
+      <div class="foot__col">
+        <a class="wordmark" href="index.html">Dennis&nbsp;Kim</a>
+        <p class="foot__note">Concertmaster, Pacific Symphony<br>Eleanor and Michael Gordon Chair</p>
+      </div>
+      <div class="foot__col">
+        <p class="eyebrow foot__h">Site</p>
+        <a class="foot__l" href="biography.html">Biography</a>
+        <a class="foot__l" href="performance.html">Performance</a>
+        <a class="foot__l" href="teaching.html">Teaching</a>
+        <a class="foot__l" href="contact.html">Contact</a>
+      </div>
+      <div class="foot__col">
+        <p class="eyebrow foot__h">Affiliations</p>
+        <a class="foot__l" href="https://www.pacificsymphony.org/" target="_blank" rel="noopener">Pacific Symphony</a>
+        <a class="foot__l" href="https://music.arts.uci.edu/" target="_blank" rel="noopener">UC Irvine</a>
+        <a class="foot__l" href="https://thebarclay.org/" target="_blank" rel="noopener">Irvine Barclay Theatre</a>
+      </div>
+      <div class="foot__col">
+        <p class="eyebrow foot__h">Based in</p>
+        <p class="foot__note">Irvine, California</p>
+      </div>
     </div>
-    <div class="foot__col">
-      <p class="eyebrow foot__h">Site</p>
-      <a class="foot__l" href="biography.html">Biography</a>
-      <a class="foot__l" href="performance.html">Performance</a>
-      <a class="foot__l" href="teaching.html">Teaching</a>
-      <a class="foot__l" href="contact.html">Contact</a>
-    </div>
-    <div class="foot__col">
-      <p class="eyebrow foot__h">Affiliations</p>
-      <a class="foot__l" href="https://www.pacificsymphony.org/" target="_blank" rel="noopener">Pacific Symphony</a>
-      <a class="foot__l" href="https://music.arts.uci.edu/" target="_blank" rel="noopener">UC Irvine</a>
-      <a class="foot__l" href="https://thebarclay.org/" target="_blank" rel="noopener">Irvine Barclay Theatre</a>
-    </div>
-    <div class="foot__col">
-      <p class="eyebrow foot__h">Based in</p>
-      <p class="foot__note">Irvine, California</p>
-      <p class="foot__note">&copy; <span data-year>2026</span></p>
+    <div class="foot__base">
+      <p class="meta">&copy; <span data-year>2026</span> Dennis Kim</p>
+      <p class="meta">Portraits by NaYoung Lee</p>
+      <p class="meta">Created by <a class="foot__by" href="https://norvodesigns.com" target="_blank" rel="noopener">Norvo&nbsp;Designs</a></p>
     </div>
   </div>
 </footer>
 
-<script src="assets/site.js?v=4f56c09e"></script>
+<script src="assets/site.js?v=7a1f4d30"></script>
 </body>
 </html>

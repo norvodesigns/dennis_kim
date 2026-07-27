@@ -7,9 +7,9 @@
 <meta name="description" content="Concertmaster chairs, guest appearances on four continents, solo repertoire, Trio Barclay, and recording work for the screen.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400&family=EB+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.remove('no-js')</script>
-<link rel="stylesheet" href="assets/site.css?v=d19c3e02">
+<link rel="stylesheet" href="assets/site.css?v=7a1f4d30">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -29,14 +29,17 @@
       <span></span><span></span>
     </button>
     <div class="nav__drawer" id="drawer" aria-hidden="true">
-      <nav aria-label="Primary mobile">
-        <a class="drawer__link" style="--i:0" href="index.html">Home</a>
-        <a class="drawer__link" style="--i:1" href="biography.html">Biography</a>
-        <a class="drawer__link" style="--i:2" href="performance.html" aria-current="page">Performance</a>
-        <a class="drawer__link" style="--i:3" href="teaching.html">Teaching</a>
-        <a class="drawer__link" style="--i:4" href="contact.html">Contact</a>
-      </nav>
-      <p class="drawer__meta meta">Irvine, California</p>
+      <div class="drawer__inner">
+        <span class="drawer__mark" aria-hidden="true">Dennis&nbsp;Kim</span>
+        <span class="drawer__rule" aria-hidden="true"></span>
+        <nav class="drawer__nav" aria-label="Primary mobile">
+          <a class="drawer__link" style="--i:0" href="index.html">Home</a>
+          <a class="drawer__link" style="--i:1" href="biography.html">Biography</a>
+          <a class="drawer__link" style="--i:2" href="performance.html" aria-current="page">Performance</a>
+          <a class="drawer__link" style="--i:3" href="teaching.html">Teaching</a>
+          <a class="drawer__link" style="--i:4" href="contact.html">Contact</a>
+        </nav>
+      </div>
     </div>
   </div>
 </header>
@@ -45,42 +48,51 @@
 
   <!-- ===== MASTHEAD ===== -->
   <section class="masthead wrap">
-    <span class="eyebrow">02 — Performance</span>
-    <h1 class="display d-lg lines">
-      <span class="line"><i>At the front of</i></span>
-      <span class="line"><i>the orchestra.</i></span>
+    <hr class="mark">
+    <span class="eyebrow">02 &mdash; Performance</span>
+    <h1 class="display d-lg lines lines--it">
+      <span class="line"><i><em>At the front of</em></i></span>
+      <span class="line"><i><em>the orchestra.</em></i></span>
     </h1>
     <p class="lede measure masthead__lede" data-rv style="--d:.24s">Concertmaster chairs on three continents, guest appearances on four, a resident piano trio, and a second life in the recording studios of Los Angeles.</p>
   </section>
 
-  <section class="section--tight wrap">
-    <figure class="fig mono img-rv">
-      <img class="ratio-3x2" src="img/pacific-symphony-performance.jpg" alt="Dennis Kim performing with Pacific Symphony" loading="lazy" width="1120" height="747" style="object-position:50% 32%">
-      <figcaption class="meta">Dennis Kim &mdash; in performance with Pacific Symphony</figcaption>
+  <!-- ===== PLATE ===== -->
+  <section class="section--tight">
+    <figure class="plate mono img-rv" style="isolation:isolate">
+      <img class="ratio-16x7" src="img/pacific-symphony-performance.jpg" alt="Dennis Kim performing with Pacific Symphony" loading="lazy" decoding="async" width="1120" height="747" style="object-position:50% 40%">
+      <figcaption class="plate__cap">
+        <div class="plate__cap-inner">
+          <p class="meta meta--light">Dennis Kim &mdash; in performance with Pacific Symphony</p>
+        </div>
+      </figcaption>
     </figure>
   </section>
 
   <!-- ===== CONCERTMASTER CHAIRS ===== -->
   <section class="section wrap">
     <div class="split">
-      <p class="eyebrow split__rail">Concertmaster</p>
+      <div class="split__rail">
+        <hr class="mark mark--short" style="margin-bottom:var(--s3)">
+        <p class="eyebrow">Concertmaster</p>
+      </div>
       <div>
-        <h2 class="display d-md lines" style="margin-bottom:clamp(30px,3.6vw,46px)">
-          <span class="line"><i>The chairs he has held.</i></span>
+        <h2 class="display d-md lines lines--it measure-sm" style="margin-bottom:clamp(34px,4vw,54px)">
+          <span class="line"><i><em>The chairs he has held.</em></i></span>
         </h2>
-        <div class="rows" data-stagger>
+        <div class="rows rows--hover" data-stagger>
           <div class="row" data-rv>
-            <span class="row__k">2018 —</span>
+            <span class="row__k">2018 &mdash;</span>
             <span class="row__t">Pacific Symphony</span>
             <span class="row__n">Gordon Chair</span>
           </div>
           <div class="row" data-rv>
-            <span class="row__k">2015 — 2018</span>
+            <span class="row__k">2015 &mdash; 2018</span>
             <span class="row__t">Buffalo Philharmonic</span>
             <span class="row__n">New York</span>
           </div>
           <div class="row" data-rv>
-            <span class="row__k">2010 — 2015</span>
+            <span class="row__k">2010 &mdash; 2015</span>
             <span class="row__t">Tampere Philharmonic</span>
             <span class="row__n">First foreign concertmaster</span>
           </div>
@@ -108,39 +120,43 @@
   <section class="band on-ink">
     <div class="section wrap">
       <div class="split">
-        <p class="eyebrow split__rail">Guest &amp; collaboration</p>
+        <div class="split__rail">
+          <hr class="mark mark--short" style="margin-bottom:var(--s3)">
+          <p class="eyebrow">Guest &amp; collaboration</p>
+        </div>
         <div data-stagger>
-          <h2 class="display d-md lines measure-sm">
-            <span class="line"><i>Guest concertmaster</i></span>
-            <span class="line"><i>on four continents.</i></span>
+          <h2 class="display d-md lines lines--it measure-sm">
+            <span class="line"><i><em>Guest concertmaster</em></i></span>
+            <span class="line"><i><em>on four continents.</em></i></span>
           </h2>
 
-          <div style="margin-top:clamp(34px,4vw,50px)" data-rv>
-            <p class="eyebrow" style="color:var(--snow-38);margin-bottom:16px">Orchestras</p>
-            <ul class="tags measure">
-              <li>Malaysia Philharmonic</li>
-              <li>Western Australia Symphony</li>
-              <li>BBC Scottish Symphony</li>
-              <li>BBC Symphony</li>
-              <li>London Philharmonic</li>
-              <li>Orchestre National de Lille</li>
-              <li>Royal Stockholm Philharmonic</li>
-              <li>Singapore Symphony</li>
-              <li>KBS Symphony</li>
-              <li>Montpelier Symphony</li>
-            </ul>
-          </div>
-
-          <div style="margin-top:clamp(32px,3.6vw,44px)" data-rv>
-            <p class="eyebrow" style="color:var(--snow-38);margin-bottom:16px">Conductors</p>
-            <ul class="tags measure">
-              <li>Riccardo Chailly</li>
-              <li>Charles Dutoit</li>
-              <li>Riccardo Muti</li>
-              <li>Hannu Lintu</li>
-              <li>André Previn</li>
-              <li>Sir Simon Rattle</li>
-            </ul>
+          <div class="roster" data-stagger style="margin-top:clamp(44px,5vw,80px)">
+            <div class="roster__col" data-rv>
+              <p class="roster__h eyebrow">Orchestras</p>
+              <ul>
+                <li class="roster__i"><span class="roster__n">01</span><span class="roster__t">Malaysia Philharmonic</span></li>
+                <li class="roster__i"><span class="roster__n">02</span><span class="roster__t">Western Australia Symphony</span></li>
+                <li class="roster__i"><span class="roster__n">03</span><span class="roster__t">BBC Scottish Symphony</span></li>
+                <li class="roster__i"><span class="roster__n">04</span><span class="roster__t">BBC Symphony</span></li>
+                <li class="roster__i"><span class="roster__n">05</span><span class="roster__t">London Philharmonic</span></li>
+                <li class="roster__i"><span class="roster__n">06</span><span class="roster__t">Orchestre National de Lille</span></li>
+                <li class="roster__i"><span class="roster__n">07</span><span class="roster__t">Royal Stockholm Philharmonic</span></li>
+                <li class="roster__i"><span class="roster__n">08</span><span class="roster__t">Singapore Symphony</span></li>
+                <li class="roster__i"><span class="roster__n">09</span><span class="roster__t">KBS Symphony</span></li>
+                <li class="roster__i"><span class="roster__n">10</span><span class="roster__t">Montpelier Symphony</span></li>
+              </ul>
+            </div>
+            <div class="roster__col" data-rv>
+              <p class="roster__h eyebrow">Conductors</p>
+              <ul>
+                <li class="roster__i"><span class="roster__n">01</span><span class="roster__t roster__t--it">Riccardo Chailly</span></li>
+                <li class="roster__i"><span class="roster__n">02</span><span class="roster__t roster__t--it">Charles Dutoit</span></li>
+                <li class="roster__i"><span class="roster__n">03</span><span class="roster__t roster__t--it">Riccardo Muti</span></li>
+                <li class="roster__i"><span class="roster__n">04</span><span class="roster__t roster__t--it">Hannu Lintu</span></li>
+                <li class="roster__i"><span class="roster__n">05</span><span class="roster__t roster__t--it">Andr&eacute; Previn</span></li>
+                <li class="roster__i"><span class="roster__n">06</span><span class="roster__t roster__t--it">Sir Simon Rattle</span></li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -150,33 +166,41 @@
   <!-- ===== SOLOIST ===== -->
   <section class="section wrap">
     <div class="split">
-      <p class="eyebrow split__rail">Soloist</p>
-      <div class="measure" data-stagger>
-        <h2 class="display d-md lines">
-          <span class="line"><i>From Bach to Wineglass.</i></span>
+      <div class="split__rail">
+        <hr class="mark mark--short" style="margin-bottom:var(--s3)">
+        <p class="eyebrow">Soloist</p>
+      </div>
+      <div data-stagger>
+        <h2 class="display d-md lines lines--it measure-sm">
+          <span class="line"><i><em>From Bach to Wineglass.</em></i></span>
         </h2>
-        <p class="body" data-rv style="margin-top:clamp(28px,3.4vw,42px)">He made his solo debut at fourteen with the Toronto Philharmonic and has since performed as a soloist with major orchestras across Asia, appearing annually with the Hong Kong, Seoul, Tampere and Buffalo Philharmonics in works by Bach, Brahms, Glass, Penderecki and Seyfried.</p>
-        <p class="body" data-rv>With Pacific Symphony he has performed a wide range of repertoire, including the 2023 world premiere of John Wineglass's violin concerto <em>Joshua Tree: Scenes from the Mojave</em> under Carl St.Clair.</p>
-        <p class="body" data-rv>Recent appearances include the Lebanon Philharmonic, the National Orchestra of Cuba, The Orchestra Now at Lincoln Center, and the Busan Philharmonic on its tour of Japan.</p>
+        <div class="measure" style="margin-top:clamp(30px,3.6vw,48px)">
+          <p class="body" data-rv>He made his solo debut at fourteen with the Toronto Philharmonic and has since performed as a soloist with major orchestras across Asia, appearing annually with the Hong Kong, Seoul, Tampere and Buffalo Philharmonics in works by Bach, Brahms, Glass, Penderecki and Seyfried.</p>
+          <p class="body" data-rv>With Pacific Symphony he has performed a wide range of repertoire, including the 2023 world premiere of John Wineglass's violin concerto <em>Joshua Tree: Scenes from the Mojave</em> under Carl St.Clair.</p>
+          <p class="body" data-rv>Recent appearances include the Lebanon Philharmonic, the National Orchestra of Cuba, The Orchestra Now at Lincoln Center, and the Busan Philharmonic on its tour of Japan.</p>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- ===== CHAMBER ===== -->
   <section class="section--tight wrap">
-    <div class="duo">
-      <figure class="fig mono img-rv">
-        <img class="ratio-3x2" src="img/trio-barclay.jpg" alt="Trio Barclay taking a bow on stage" loading="lazy" width="1080" height="810" style="object-position:50% 38%">
+    <div class="duo duo--wide">
+      <figure class="fig fig--held mono img-rv">
+        <img class="ratio-3x2" src="img/trio-barclay.jpg" alt="Trio Barclay taking a bow on stage" loading="lazy" decoding="async" width="1080" height="810" style="object-position:50% 38%">
         <figcaption class="meta">Trio Barclay &mdash; Irvine Barclay Theatre</figcaption>
       </figure>
       <div data-stagger>
-        <p class="eyebrow" data-rv style="margin-bottom:18px">Chamber music</p>
-        <h2 class="display d-sm lines">
-          <span class="line"><i>Trio Barclay.</i></span>
+        <hr class="mark mark--short" style="margin-bottom:var(--s3)">
+        <p class="eyebrow" data-rv style="margin-bottom:var(--s4)">Chamber music</p>
+        <h2 class="display d-sm lines lines--it">
+          <span class="line"><i><em>Trio Barclay.</em></i></span>
         </h2>
-        <p class="body" data-rv style="margin-top:22px">With cellist Jonah Kim and pianist Sean Kennard, the trio is the resident ensemble of the Irvine Barclay Theatre. It has commissioned more than nine new works by living composers and released its first commercial recording in 2025.</p>
-        <p class="body" data-rv>The trio has performed internationally and provided the live score for <em>Defining Courage</em>, a film honouring the soldiers of the 100th Infantry Battalion and 442nd Regimental Combat Team.</p>
-        <p class="body" data-rv>He also appears regularly with Orli Shaham and principal players of Pacific Symphony in the Café Ludwig series.</p>
+        <div style="margin-top:var(--s4)">
+          <p class="body" data-rv>With cellist Jonah Kim and pianist Sean Kennard, the trio is the resident ensemble of the Irvine Barclay Theatre. It has commissioned more than nine new works by living composers and released its first commercial recording in 2025.</p>
+          <p class="body" data-rv>The trio has performed internationally and provided the live score for <em>Defining Courage</em>, a film honouring the soldiers of the 100th Infantry Battalion and 442nd Regimental Combat Team.</p>
+          <p class="body" data-rv>He also appears regularly with Orli Shaham and principal players of Pacific Symphony in the Caf&eacute; Ludwig series.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -184,8 +208,11 @@
   <!-- ===== SUMMER ===== -->
   <section class="section--tight wrap">
     <div class="split">
-      <p class="eyebrow split__rail">Summer</p>
-      <div class="rows" data-stagger>
+      <div class="split__rail">
+        <hr class="mark mark--short" style="margin-bottom:var(--s3)">
+        <p class="eyebrow">Summer</p>
+      </div>
+      <div class="rows rows--hover" data-stagger>
         <div class="row" data-rv>
           <span class="row__k">Summer</span>
           <span class="row__t">Mainly Mozart All-Star Orchestra</span>
@@ -194,7 +221,7 @@
         <div class="row" data-rv>
           <span class="row__k">Summer</span>
           <span class="row__t">Peninsula Festival Orchestra</span>
-          <span class="row__n">Concertmaster · Door County, Wisconsin</span>
+          <span class="row__n">Concertmaster &middot; Door County, Wisconsin</span>
         </div>
       </div>
     </div>
@@ -204,34 +231,64 @@
   <section class="band on-ink">
     <div class="section wrap">
       <div class="split">
-        <p class="eyebrow split__rail">For the screen</p>
+        <div class="split__rail">
+          <hr class="mark mark--short" style="margin-bottom:var(--s3)">
+          <p class="eyebrow">For the screen</p>
+        </div>
         <div data-stagger>
-          <h2 class="display d-md lines measure-sm">
-            <span class="line"><i>Heard, if not seen.</i></span>
+          <h2 class="display d-md lines lines--it measure-sm">
+            <span class="line"><i><em>Heard, if not seen.</em></i></span>
           </h2>
-          <p class="body" data-rv style="margin-top:clamp(26px,3.2vw,38px);max-width:58ch">As a recording artist he can be heard on the soundtracks of some of the last decade's largest films, working with composers including John Williams and Alan Menken.</p>
+          <p class="body" data-rv style="margin-top:clamp(28px,3.2vw,44px);max-width:58ch">As a recording artist he can be heard on the soundtracks of some of the last decade's largest films, working with composers including John Williams and Alan Menken.</p>
 
-          <div style="margin-top:clamp(30px,3.4vw,44px)" data-rv>
-            <p class="eyebrow" style="color:var(--snow-38);margin-bottom:16px">Selected credits</p>
-            <ul class="tags measure">
-              <li><em>Star Wars: The Rise of Skywalker</em></li>
-              <li><em>Moana 2</em></li>
-              <li><em>Jumanji: The Next Level</em></li>
-              <li><em>The Lego Movie 2</em></li>
-              <li><em>The Man from Toronto</em></li>
-            </ul>
-          </div>
-
-          <div style="margin-top:clamp(26px,3vw,36px)" data-rv>
-            <p class="eyebrow" style="color:var(--snow-38);margin-bottom:16px">Also credited</p>
-            <ul class="tags measure">
-              <li><em>Toy Story 4</em></li>
-              <li><em>The Mandalorian</em></li>
-              <li><em>Bridgerton</em></li>
-              <li><em>It Chapter Two</em></li>
-              <li><em>Transformers VII</em></li>
-              <li><em>Sing 3</em></li>
-            </ul>
+          <div class="credits" data-rv style="margin-top:clamp(44px,5vw,80px)">
+            <div class="credit">
+              <p class="credit__t">Star Wars: The Rise of Skywalker</p>
+              <p class="credit__m">John Williams</p>
+            </div>
+            <div class="credit">
+              <p class="credit__t">Moana 2</p>
+              <p class="credit__m">Feature</p>
+            </div>
+            <div class="credit">
+              <p class="credit__t">Jumanji: The Next Level</p>
+              <p class="credit__m">Feature</p>
+            </div>
+            <div class="credit">
+              <p class="credit__t">The Lego Movie 2</p>
+              <p class="credit__m">Feature</p>
+            </div>
+            <div class="credit">
+              <p class="credit__t">The Man from Toronto</p>
+              <p class="credit__m">Feature</p>
+            </div>
+            <div class="credit">
+              <p class="credit__t">Toy Story 4</p>
+              <p class="credit__m">Feature</p>
+            </div>
+            <div class="credit">
+              <p class="credit__t">The Mandalorian</p>
+              <p class="credit__m">Television</p>
+            </div>
+            <div class="credit">
+              <p class="credit__t">Bridgerton</p>
+              <p class="credit__m">Television</p>
+            </div>
+            <div class="credit">
+              <p class="credit__t">It Chapter Two</p>
+              <p class="credit__m">Feature</p>
+            </div>
+            <div class="credit">
+              <p class="credit__t">Transformers VII</p>
+              <p class="credit__m">Feature</p>
+            </div>
+            <div class="credit">
+              <p class="credit__t">Sing 3</p>
+              <p class="credit__m">Feature</p>
+            </div>
+            <div class="credit credit--more">
+              <p class="credit__t">and many more</p>
+            </div>
           </div>
         </div>
       </div>
@@ -239,42 +296,54 @@
   </section>
 
   <!-- ===== NEXT ===== -->
-  <section class="section--tight wrap">
-    <div class="duo">
-      <h2 class="display d-sm lines"><span class="line"><i>Next &mdash; the studio.</i></span></h2>
-      <p data-rv style="justify-self:start"><a class="ln" href="teaching.html">Teaching &#8594;</a></p>
+  <section class="section wrap">
+    <div data-stagger>
+      <hr class="mark mark--short" style="margin-bottom:var(--s3)">
+      <p class="eyebrow" data-rv style="margin-bottom:var(--s4)">Next</p>
+      <h2 class="display d-md lines lines--it measure-sm">
+        <span class="line"><i><em>Next &mdash; the studio.</em></i></span>
+      </h2>
+      <p class="body measure-sm" data-rv style="margin-top:var(--s4)">A studio at UC Irvine and Interlochen, and students now placed across the globe.</p>
+      <p style="margin-top:clamp(32px,3.4vw,48px)" data-rv><a class="ln" href="teaching.html">Teaching</a></p>
     </div>
   </section>
 
 </main>
 
 <footer class="site-foot">
-  <div class="wrap foot__grid">
-    <div class="foot__col">
-      <a class="wordmark" href="index.html" style="color:var(--ink)">Dennis&nbsp;Kim</a>
-      <p class="foot__note" style="margin-top:6px">Concertmaster, Pacific Symphony<br>Eleanor and Michael Gordon Chair</p>
+  <div class="wrap">
+    <hr class="mark foot__mark">
+    <div class="foot__grid">
+      <div class="foot__col">
+        <a class="wordmark" href="index.html">Dennis&nbsp;Kim</a>
+        <p class="foot__note">Concertmaster, Pacific Symphony<br>Eleanor and Michael Gordon Chair</p>
+      </div>
+      <div class="foot__col">
+        <p class="eyebrow foot__h">Site</p>
+        <a class="foot__l" href="biography.html">Biography</a>
+        <a class="foot__l" href="performance.html">Performance</a>
+        <a class="foot__l" href="teaching.html">Teaching</a>
+        <a class="foot__l" href="contact.html">Contact</a>
+      </div>
+      <div class="foot__col">
+        <p class="eyebrow foot__h">Affiliations</p>
+        <a class="foot__l" href="https://www.pacificsymphony.org/" target="_blank" rel="noopener">Pacific Symphony</a>
+        <a class="foot__l" href="https://music.arts.uci.edu/" target="_blank" rel="noopener">UC Irvine</a>
+        <a class="foot__l" href="https://thebarclay.org/" target="_blank" rel="noopener">Irvine Barclay Theatre</a>
+      </div>
+      <div class="foot__col">
+        <p class="eyebrow foot__h">Based in</p>
+        <p class="foot__note">Irvine, California</p>
+      </div>
     </div>
-    <div class="foot__col">
-      <p class="eyebrow foot__h">Site</p>
-      <a class="foot__l" href="biography.html">Biography</a>
-      <a class="foot__l" href="performance.html">Performance</a>
-      <a class="foot__l" href="teaching.html">Teaching</a>
-      <a class="foot__l" href="contact.html">Contact</a>
-    </div>
-    <div class="foot__col">
-      <p class="eyebrow foot__h">Affiliations</p>
-      <a class="foot__l" href="https://www.pacificsymphony.org/" target="_blank" rel="noopener">Pacific Symphony</a>
-      <a class="foot__l" href="https://music.arts.uci.edu/" target="_blank" rel="noopener">UC Irvine</a>
-      <a class="foot__l" href="https://thebarclay.org/" target="_blank" rel="noopener">Irvine Barclay Theatre</a>
-    </div>
-    <div class="foot__col">
-      <p class="eyebrow foot__h">Based in</p>
-      <p class="foot__note">Irvine, California</p>
-      <p class="foot__note">&copy; <span data-year>2026</span></p>
+    <div class="foot__base">
+      <p class="meta">&copy; <span data-year>2026</span> Dennis Kim</p>
+      <p class="meta">Portraits by NaYoung Lee</p>
+      <p class="meta">Created by <a class="foot__by" href="https://norvodesigns.com" target="_blank" rel="noopener">Norvo&nbsp;Designs</a></p>
     </div>
   </div>
 </footer>
 
-<script src="assets/site.js?v=4f56c09e"></script>
+<script src="assets/site.js?v=7a1f4d30"></script>
 </body>
 </html>

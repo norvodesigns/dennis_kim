@@ -7,9 +7,9 @@
 <meta name="description" content="Born in Seoul and raised in Toronto, Dennis Kim studied at Curtis and Yale before holding concertmaster chairs in Hong Kong, Seoul, Tampere, Buffalo and Orange County.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400&family=EB+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.remove('no-js')</script>
-<link rel="stylesheet" href="assets/site.css?v=d19c3e02">
+<link rel="stylesheet" href="assets/site.css?v=7a1f4d30">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -29,14 +29,17 @@
       <span></span><span></span>
     </button>
     <div class="nav__drawer" id="drawer" aria-hidden="true">
-      <nav aria-label="Primary mobile">
-        <a class="drawer__link" style="--i:0" href="index.html">Home</a>
-        <a class="drawer__link" style="--i:1" href="biography.html" aria-current="page">Biography</a>
-        <a class="drawer__link" style="--i:2" href="performance.html">Performance</a>
-        <a class="drawer__link" style="--i:3" href="teaching.html">Teaching</a>
-        <a class="drawer__link" style="--i:4" href="contact.html">Contact</a>
-      </nav>
-      <p class="drawer__meta meta">Irvine, California</p>
+      <div class="drawer__inner">
+        <span class="drawer__mark" aria-hidden="true">Dennis&nbsp;Kim</span>
+        <span class="drawer__rule" aria-hidden="true"></span>
+        <nav class="drawer__nav" aria-label="Primary mobile">
+          <a class="drawer__link" style="--i:0" href="index.html">Home</a>
+          <a class="drawer__link" style="--i:1" href="biography.html" aria-current="page">Biography</a>
+          <a class="drawer__link" style="--i:2" href="performance.html">Performance</a>
+          <a class="drawer__link" style="--i:3" href="teaching.html">Teaching</a>
+          <a class="drawer__link" style="--i:4" href="contact.html">Contact</a>
+        </nav>
+      </div>
     </div>
   </div>
 </header>
@@ -45,54 +48,75 @@
 
   <!-- ===== MASTHEAD ===== -->
   <section class="masthead wrap">
+    <hr class="mark">
     <span class="eyebrow">01 — Biography</span>
-    <h1 class="display d-lg lines">
-      <span class="line"><i>Born in Korea.</i></span>
-      <span class="line"><i>Raised in Canada.</i></span>
-      <span class="line"><i>Educated in the United States.</i></span>
+    <h1 class="display d-lg lines lines--it">
+      <span class="line"><i><em>Born in Korea.</em></i></span>
+      <span class="line"><i><em>Raised in Canada.</em></i></span>
+      <span class="line"><i><em>Educated in the United States.</em></i></span>
     </h1>
     <p class="lede measure masthead__lede" data-rv style="--d:.28s">A career that began with a solo debut at fourteen and has since crossed four continents.</p>
   </section>
 
   <!-- ===== NARRATIVE ===== -->
   <section class="section--tight wrap">
-    <div class="duo duo--start">
+    <div class="duo duo--wide duo--start">
       <div data-stagger>
         <p class="body" data-rv>Dennis Kim was born in Seoul in 1975 and moved to Toronto with his family at three months old. He began the violin at four, and from seven studied with the late Victor Danchenko at the Royal Conservatory of Music. At fourteen he made his solo debut with the Toronto Philharmonic, playing the Mendelssohn Violin Concerto in E minor.</p>
         <p class="body" data-rv>He went on to the Curtis Institute of Music and the Yale School of Music. His principal teachers were Danchenko, Jaime Laredo, Aaron Rosand, Yumi Ninomiya Scott, Peter Oundjian and Paul Kantor; in chamber music he was coached by Isaac Stern, Felix Galimir and Claude Frank.</p>
         <p class="body" data-rv>His first concertmaster appointment came at twenty-two, with the Tucson Symphony. Positions in Hong Kong, Seoul, Tampere and Buffalo followed, and in 2018 he was named Concertmaster of Pacific Symphony, where he holds the Eleanor and Michael Gordon Chair. He lives in Irvine, California with his wife and two daughters.</p>
       </div>
-      <figure class="fig mono img-rv" style="--d:.1s">
-        <img class="ratio-4x5" src="img/portrait-tall.jpg" alt="Dennis Kim, black and white studio portrait" loading="lazy" width="1200" height="1800" style="object-position:50% 24%">
+      <figure class="fig fig--held mono img-rv" style="--d:.1s">
+        <img class="ratio-4x5" src="img/portrait-tall.jpg" alt="Dennis Kim, black and white studio portrait" loading="lazy" decoding="async" width="1200" height="1800" style="object-position:50% 24%">
         <figcaption class="meta">Studio portrait &mdash; photograph by NaYoung Lee</figcaption>
       </figure>
     </div>
   </section>
 
-  <!-- ===== EARLY YEARS PULL ===== -->
+  <!-- ===== EARLY YEARS ===== -->
   <section class="section wrap">
-    <div class="duo">
-      <figure class="fig mono img-rv">
-        <img class="ratio-3x2" src="img/early-recital.jpg" alt="A young Dennis Kim playing the violin at an early recital" loading="lazy" width="1280" height="960" style="object-position:50% 34%">
+    <div class="duo duo--tall">
+      <figure class="fig fig--held mono img-rv">
+        <img class="ratio-3x2" src="img/early-recital.jpg" alt="A young Dennis Kim playing the violin at an early recital" loading="lazy" decoding="async" width="1280" height="960" style="object-position:50% 34%">
         <figcaption class="meta">An early recital</figcaption>
       </figure>
       <div data-stagger>
-        <p class="eyebrow" data-rv style="margin-bottom:18px">The early years</p>
-        <h2 class="display d-sm lines">
-          <span class="line"><i>A start in Toronto.</i></span>
+        <hr class="mark mark--short" style="margin-bottom:var(--s3)">
+        <p class="eyebrow" data-rv style="margin-bottom:var(--s3)">The early years</p>
+        <h2 class="display d-sm lines lines--it">
+          <span class="line"><i><em>A start in Toronto.</em></i></span>
         </h2>
-        <p class="body" data-rv style="margin-top:22px">He began the violin at four, not long after the family settled in Toronto, and from seven studied with the late Victor Danchenko at the Royal Conservatory of Music &mdash; the teacher who shaped his earliest years on the instrument.</p>
+        <p class="body" data-rv style="margin-top:var(--s3)">He began the violin at four, not long after the family settled in Toronto, and from seven studied with the late Victor Danchenko at the Royal Conservatory of Music &mdash; the teacher who shaped his earliest years on the instrument.</p>
       </div>
     </div>
   </section>
 
-  <!-- ===== TIMELINE ===== -->
+  <!-- ===== QUOTE ===== -->
+  <section class="band on-ink">
+    <div class="section wrap">
+      <div class="split">
+        <div class="split__rail">
+          <hr class="mark mark--short" style="margin-bottom:var(--s3)">
+          <p class="eyebrow">In his own words</p>
+        </div>
+        <div class="quote" data-stagger>
+          <p class="quote__t" data-rv>&ldquo;We weren&rsquo;t well off growing up, but I don&rsquo;t remember ever skipping a lesson. They were fully supportive. Being talented is important, but if you don&rsquo;t have the support of your parents it&rsquo;s impossible.&rdquo;</p>
+          <p class="meta quote__a" data-rv>Dennis Kim &mdash; Pacific Symphony Blog, &ldquo;Humans of Pacific Symphony,&rdquo; 2023</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CHRONOLOGY ===== -->
   <section class="section wrap">
     <div class="split">
-      <p class="eyebrow split__rail">Chronology</p>
+      <div class="split__rail">
+        <hr class="mark mark--short" style="margin-bottom:var(--s3)">
+        <p class="eyebrow">Chronology</p>
+      </div>
       <div>
-        <h2 class="display d-md lines" style="margin-bottom:clamp(30px,3.6vw,48px)">
-          <span class="line"><i>The chronology.</i></span>
+        <h2 class="display d-md lines lines--it" style="margin-bottom:clamp(32px,3.6vw,48px)">
+          <span class="line"><i><em>The chronology.</em></i></span>
         </h2>
         <ol class="tl" data-stagger>
           <li class="tl__item" data-rv>
@@ -156,31 +180,38 @@
     </div>
   </section>
 
-  <!-- ===== TEACHERS ===== -->
+  <!-- ===== LINEAGE ===== -->
   <section class="band on-ink">
     <div class="section wrap">
       <div class="split">
-        <p class="eyebrow split__rail">Lineage</p>
+        <div class="split__rail">
+          <hr class="mark mark--short" style="margin-bottom:var(--s3)">
+          <p class="eyebrow">Lineage</p>
+        </div>
         <div data-stagger>
-          <h2 class="display d-md lines measure-sm">
-            <span class="line"><i>The people who taught him.</i></span>
+          <h2 class="display d-md lines lines--it measure-sm">
+            <span class="line"><i><em>The people who taught him.</em></i></span>
           </h2>
-          <div style="margin-top:clamp(32px,3.6vw,46px);display:grid;gap:clamp(28px,3.4vw,44px);grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
-            <div data-rv>
-              <p class="eyebrow" style="color:var(--snow-38);margin-bottom:14px">Principal teachers</p>
-              <ul class="tags">
-                <li>Victor Danchenko</li><li>Jaime Laredo</li><li>Aaron Rosand</li>
-                <li>Yumi Ninomiya Scott</li><li>Peter Oundjian</li><li>Paul Kantor</li>
-              </ul>
+
+          <div class="roster" style="margin-top:clamp(40px,4.4vw,64px)">
+            <div class="roster__col" data-rv>
+              <p class="eyebrow roster__h">Principal teachers</p>
+              <div class="roster__i"><span class="roster__n">01</span><span class="roster__t roster__t--it">Victor Danchenko</span></div>
+              <div class="roster__i"><span class="roster__n">02</span><span class="roster__t roster__t--it">Jaime Laredo</span></div>
+              <div class="roster__i"><span class="roster__n">03</span><span class="roster__t roster__t--it">Aaron Rosand</span></div>
+              <div class="roster__i"><span class="roster__n">04</span><span class="roster__t roster__t--it">Yumi Ninomiya Scott</span></div>
+              <div class="roster__i"><span class="roster__n">05</span><span class="roster__t roster__t--it">Peter Oundjian</span></div>
+              <div class="roster__i"><span class="roster__n">06</span><span class="roster__t roster__t--it">Paul Kantor</span></div>
             </div>
-            <div data-rv>
-              <p class="eyebrow" style="color:var(--snow-38);margin-bottom:14px">Chamber music coaching</p>
-              <ul class="tags">
-                <li>Isaac Stern</li><li>Felix Galimir</li><li>Claude Frank</li>
-              </ul>
+            <div class="roster__col" data-rv>
+              <p class="eyebrow roster__h">Chamber music coaching</p>
+              <div class="roster__i"><span class="roster__n">01</span><span class="roster__t roster__t--it">Isaac Stern</span></div>
+              <div class="roster__i"><span class="roster__n">02</span><span class="roster__t roster__t--it">Felix Galimir</span></div>
+              <div class="roster__i"><span class="roster__n">03</span><span class="roster__t roster__t--it">Claude Frank</span></div>
             </div>
           </div>
-          <p class="body" data-rv style="margin-top:clamp(28px,3.2vw,40px);max-width:60ch">He has since collaborated with Pinchas Zukerman, Jaime Laredo, and members of the Guarneri and Tokyo String Quartets.</p>
+
+          <p class="body" data-rv style="margin-top:clamp(32px,3.4vw,48px);max-width:60ch">He has since collaborated with Pinchas Zukerman, Jaime Laredo, and members of the Guarneri and Tokyo String Quartets.</p>
         </div>
       </div>
     </div>
@@ -189,15 +220,18 @@
   <!-- ===== OFF THE STAGE ===== -->
   <section class="section wrap">
     <div class="split">
-      <p class="eyebrow split__rail">Off the stage</p>
+      <div class="split__rail">
+        <hr class="mark mark--short" style="margin-bottom:var(--s3)">
+        <p class="eyebrow">Off the stage</p>
+      </div>
       <div>
-        <h2 class="display d-md lines measure-sm">
-          <span class="line"><i>A second, entirely</i></span>
-          <span class="line"><i>unofficial career in sport.</i></span>
+        <h2 class="display d-md lines lines--it measure-sm">
+          <span class="line"><i><em>A second, entirely</em></i></span>
+          <span class="line"><i><em>unofficial career in sport.</em></i></span>
         </h2>
-        <p class="meta" data-rv style="--d:.16s;margin-top:22px">Written by Dennis Kim &mdash; and, he would like it noted, entirely in his own words.</p>
+        <p class="meta" data-rv style="--d:.16s;margin-top:var(--s3);max-width:64ch">Written by Dennis Kim &mdash; and, he would like it noted, entirely in his own words. This section is a humorous personal aside, not a factual record.</p>
 
-        <div class="measure" style="margin-top:clamp(34px,4vw,52px)" data-stagger>
+        <div class="measure" style="margin-top:clamp(36px,4vw,56px)" data-stagger>
           <p class="body" data-rv>From an early age Dennis showed incredible athletic ability. At five he was selected to play right field for his church baseball team, alongside seventeen-year-olds. He went 0-for-63 at the plate, but made only ten errors in eleven chances in the field.</p>
           <p class="body" data-rv>He went on to play sweeper for his church soccer team, which allowed no goals across a five-game tournament. The goalkeeper &mdash; who made roughly two saves all week &mdash; was named MVP. His parents thought the award unfair and changed churches.</p>
           <p class="body" data-rv>Through primary and junior school he was picked first overall for every recess sport: basketball, football, baseball, four square, wall ball. He was especially good at floor hockey, and had his parents been able to afford skates, he would surely have made the NHL.</p>
@@ -212,10 +246,13 @@
   </section>
 
   <!-- ===== NEXT ===== -->
-  <hr class="rule">
   <section class="section--tight wrap">
+    <hr class="mark" style="margin-bottom:clamp(40px,4.4vw,64px)">
     <div class="duo">
-      <h2 class="display d-sm lines"><span class="line"><i>Next &mdash; the performing life.</i></span></h2>
+      <div>
+        <p class="eyebrow" data-rv style="margin-bottom:var(--s3)">Next</p>
+        <h2 class="display d-sm lines lines--it"><span class="line"><i><em>Next &mdash; the performing life.</em></i></span></h2>
+      </div>
       <p data-rv style="justify-self:start"><a class="ln" href="performance.html">Performance &#8594;</a></p>
     </div>
   </section>
@@ -223,32 +260,39 @@
 </main>
 
 <footer class="site-foot">
-  <div class="wrap foot__grid">
-    <div class="foot__col">
-      <a class="wordmark" href="index.html" style="color:var(--ink)">Dennis&nbsp;Kim</a>
-      <p class="foot__note" style="margin-top:6px">Concertmaster, Pacific Symphony<br>Eleanor and Michael Gordon Chair</p>
+  <div class="wrap">
+    <hr class="mark foot__mark">
+    <div class="foot__grid">
+      <div class="foot__col">
+        <a class="wordmark" href="index.html">Dennis&nbsp;Kim</a>
+        <p class="foot__note">Concertmaster, Pacific Symphony<br>Eleanor and Michael Gordon Chair</p>
+      </div>
+      <div class="foot__col">
+        <p class="eyebrow foot__h">Site</p>
+        <a class="foot__l" href="biography.html">Biography</a>
+        <a class="foot__l" href="performance.html">Performance</a>
+        <a class="foot__l" href="teaching.html">Teaching</a>
+        <a class="foot__l" href="contact.html">Contact</a>
+      </div>
+      <div class="foot__col">
+        <p class="eyebrow foot__h">Affiliations</p>
+        <a class="foot__l" href="https://www.pacificsymphony.org/" target="_blank" rel="noopener">Pacific Symphony</a>
+        <a class="foot__l" href="https://music.arts.uci.edu/" target="_blank" rel="noopener">UC Irvine</a>
+        <a class="foot__l" href="https://thebarclay.org/" target="_blank" rel="noopener">Irvine Barclay Theatre</a>
+      </div>
+      <div class="foot__col">
+        <p class="eyebrow foot__h">Based in</p>
+        <p class="foot__note">Irvine, California</p>
+      </div>
     </div>
-    <div class="foot__col">
-      <p class="eyebrow foot__h">Site</p>
-      <a class="foot__l" href="biography.html">Biography</a>
-      <a class="foot__l" href="performance.html">Performance</a>
-      <a class="foot__l" href="teaching.html">Teaching</a>
-      <a class="foot__l" href="contact.html">Contact</a>
-    </div>
-    <div class="foot__col">
-      <p class="eyebrow foot__h">Affiliations</p>
-      <a class="foot__l" href="https://www.pacificsymphony.org/" target="_blank" rel="noopener">Pacific Symphony</a>
-      <a class="foot__l" href="https://music.arts.uci.edu/" target="_blank" rel="noopener">UC Irvine</a>
-      <a class="foot__l" href="https://thebarclay.org/" target="_blank" rel="noopener">Irvine Barclay Theatre</a>
-    </div>
-    <div class="foot__col">
-      <p class="eyebrow foot__h">Based in</p>
-      <p class="foot__note">Irvine, California</p>
-      <p class="foot__note">&copy; <span data-year>2026</span></p>
+    <div class="foot__base">
+      <p class="meta">&copy; <span data-year>2026</span> Dennis Kim</p>
+      <p class="meta">Portraits by NaYoung Lee</p>
+      <p class="meta">Created by <a class="foot__by" href="https://norvodesigns.com" target="_blank" rel="noopener">Norvo&nbsp;Designs</a></p>
     </div>
   </div>
 </footer>
 
-<script src="assets/site.js?v=4f56c09e"></script>
+<script src="assets/site.js?v=7a1f4d30"></script>
 </body>
 </html>

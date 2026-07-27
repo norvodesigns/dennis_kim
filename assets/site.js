@@ -5,7 +5,6 @@
 (function () {
   'use strict';
 
-  var root = document.documentElement;
   var body = document.body;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -72,7 +71,8 @@
   });
 
   /* ---------- 3. scroll reveals ---------- */
-  var revealables = [].slice.call(document.querySelectorAll('[data-rv], .lines, .img-rv'));
+  var RV = '[data-rv], [data-rv-scale], .lines, .img-rv, .mark';
+  var revealables = [].slice.call(document.querySelectorAll(RV));
 
   if (!('IntersectionObserver' in window) || reduce.matches) {
     revealables.forEach(function (el) { el.classList.add('in'); });
@@ -86,10 +86,10 @@
     }, { rootMargin: '0px 0px -11% 0px', threshold: 0.06 });
 
     revealables.forEach(function (el) {
-      // stagger siblings that opt in
+      // stagger siblings that opt in — phrasing, not a single hit
       var group = el.closest('[data-stagger]');
       if (group && !el.style.getPropertyValue('--d')) {
-        var kids = [].slice.call(group.querySelectorAll('[data-rv], .lines, .img-rv'));
+        var kids = [].slice.call(group.querySelectorAll(RV));
         var i = kids.indexOf(el);
         if (i > -1) el.style.setProperty('--d', (i * 0.085).toFixed(3) + 's');
       }
@@ -112,18 +112,23 @@
   if (nav) {
     var navH = nav.offsetHeight;
     var ticking = false;
+    // every ink field the bar can pass over: the hero, the dark bands, the footer
+    var darkZones = [].slice.call(document.querySelectorAll('.hero, .band, .site-foot'));
 
     function syncNav() {
       ticking = false;
       var y = window.scrollY || window.pageYOffset;
+      var line = navH * 0.55;
 
-      if (hero) {
-        var over = hero.getBoundingClientRect().bottom > navH * 0.62;
-        nav.classList.toggle('on-dark', over);
-        nav.classList.toggle('is-stuck', !over && y > 8);
-      } else {
-        nav.classList.toggle('is-stuck', y > 8);
-      }
+      var onDark = darkZones.some(function (el) {
+        var r = el.getBoundingClientRect();
+        return r.top <= line && r.bottom >= line;
+      });
+      // the hero is the one dark field the bar floats over without a backing
+      var overHero = !!hero && hero.getBoundingClientRect().bottom > navH * 0.62;
+
+      nav.classList.toggle('on-dark', onDark);
+      nav.classList.toggle('is-stuck', !overHero && y > 8);
     }
     function onScroll() {
       if (!ticking) { ticking = true; requestAnimationFrame(syncNav); }
@@ -133,31 +138,112 @@
     syncNav();
   }
 
-  /* ---------- 5. mobile drawer ---------- */
+  /* ---------- 5. mobile drawer ----------
+     Opening and closing are both choreographed. The wordmark is FLIPped:
+     the drawer's copy is measured against the header's, placed exactly on
+     top of it, then released — so the mark appears to grow out of the bar
+     and settle above the links. Closing runs the same move in reverse. */
   var burger = document.querySelector('.burger');
   if (burger && nav) {
     var drawer = nav.querySelector('.nav__drawer');
+    var hdrMark = nav.querySelector('.wordmark');
+    var drwMark = nav.querySelector('.drawer__mark');
+    var closeTimer = null;
+    var CLOSE_MS = 640;
 
-    function setOpen(open) {
-      nav.classList.toggle('is-open', open);
-      body.classList.toggle('nav-open', open);
-      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-      if (drawer) drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+    /* Measure the transform that lays the drawer mark exactly over the
+       header mark. Both share family, weight and an em-based letter-spacing,
+       so a single uniform scale matches them precisely. */
+    function restingTransform() {
+      if (!hdrMark || !drwMark) return '';
+      drwMark.style.transition = 'none';
+      drwMark.style.transform = 'none';
+      var b = drwMark.getBoundingClientRect();
+      var a = hdrMark.getBoundingClientRect();
+      if (!b.width || !a.width) return '';
+      var s = a.width / b.width;
+      return 'translate(' + (a.left - b.left).toFixed(2) + 'px,' +
+             (a.top - b.top).toFixed(2) + 'px) scale(' + s.toFixed(4) + ')';
     }
+
+    /* Pin the mark at `t` with transitions OFF, force the browser to commit
+       that as the starting style, and only then hand control back to the
+       stylesheet. Restoring the transition before the commit would make the
+       browser animate INTO the start pose and the move would collapse. */
+    function commitThenRelease(t) {
+      if (!drwMark) return;
+      drwMark.style.transition = 'none';
+      drwMark.style.transform = t;
+      // eslint-disable-next-line no-unused-expressions
+      drwMark.offsetWidth;
+      drwMark.style.transition = '';
+    }
+
+    function open() {
+      clearTimeout(closeTimer);
+      nav.classList.remove('is-closing');
+
+      var start = reduce.matches ? '' : restingTransform();
+      commitThenRelease(start || 'none');
+
+      nav.classList.add('is-open');
+      body.classList.add('nav-open');
+      burger.setAttribute('aria-expanded', 'true');
+      if (drawer) drawer.setAttribute('aria-hidden', 'false');
+
+      if (drwMark) {
+        requestAnimationFrame(function () { drwMark.style.transform = 'none'; });
+      }
+    }
+
+    function close() {
+      var end = reduce.matches ? '' : restingTransform();
+      // the mark is sitting at its resting pose; commit that, then release
+      commitThenRelease('none');
+
+      nav.classList.add('is-closing');
+      nav.classList.remove('is-open');
+      body.classList.remove('nav-open');
+      burger.setAttribute('aria-expanded', 'false');
+      if (drawer) drawer.setAttribute('aria-hidden', 'true');
+
+      if (drwMark && end) {
+        requestAnimationFrame(function () { drwMark.style.transform = end; });
+      }
+
+      clearTimeout(closeTimer);
+      closeTimer = setTimeout(function () {
+        nav.classList.remove('is-closing');
+        if (drwMark) {
+          drwMark.style.transition = 'none';
+          drwMark.style.transform = 'none';
+          drwMark.offsetWidth;
+          drwMark.style.transition = '';
+        }
+      }, CLOSE_MS);
+    }
+
+    function setOpen(want) { want ? open() : close(); }
+
     burger.addEventListener('click', function () {
       setOpen(!nav.classList.contains('is-open'));
     });
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && nav.classList.contains('is-open')) {
-        setOpen(false);
+        close();
         burger.focus();
       }
     });
     // close if we resize up into desktop
     window.addEventListener('resize', function () {
-      if (window.innerWidth >= 900 && nav.classList.contains('is-open')) setOpen(false);
+      if (window.innerWidth >= 900 && nav.classList.contains('is-open')) close();
     });
-    setOpen(false);
+
+    // initial state, without running the closing choreography on load
+    nav.classList.remove('is-open', 'is-closing');
+    body.classList.remove('nav-open');
+    burger.setAttribute('aria-expanded', 'false');
+    if (drawer) drawer.setAttribute('aria-hidden', 'true');
   }
 
   /* ---------- 6. hero parallax ----------
@@ -187,36 +273,7 @@
     });
   }
 
-  /* ---------- 7. counters ---------- */
-  var counters = [].slice.call(document.querySelectorAll('[data-count]'));
-  if (counters.length) {
-    if (reduce.matches || !('IntersectionObserver' in window)) {
-      counters.forEach(function (el) { el.textContent = el.dataset.count; });
-    } else {
-      var cio = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          var el = entry.target;
-          cio.unobserve(el);
-          var target = parseInt(el.dataset.count, 10);
-          if (isNaN(target)) { el.textContent = el.dataset.count; return; }
-          var dur = 1250, t0 = null;
-          function step(ts) {
-            if (t0 === null) t0 = ts;
-            var p = Math.min((ts - t0) / dur, 1);
-            var eased = 1 - Math.pow(1 - p, 4);
-            el.textContent = Math.round(target * eased);
-            if (p < 1) requestAnimationFrame(step);
-            else el.textContent = target;
-          }
-          requestAnimationFrame(step);
-        });
-      }, { threshold: 0.5 });
-      counters.forEach(function (el) { el.textContent = '0'; cio.observe(el); });
-    }
-  }
-
-  /* ---------- 8. current year ---------- */
+  /* ---------- 7. current year ---------- */
   var yrs = document.querySelectorAll('[data-year]');
   if (yrs.length) {
     var y = String(new Date().getFullYear());
