@@ -240,28 +240,28 @@ em{font-style:italic}
 /* ============================================================
    6. NAV
    ============================================================ */
-/* Going from light-on-dark to dark-on-light cannot be done as a colour
-   blend: any interpolation between the two passes through mid-grey text on
-   a mid-grey field, where contrast falls to nothing. A long cross-fade is
-   what makes the handover read as broken. So the inversion is a step, taken
-   fast, at the moment the backdrop's own luminance crosses halfway — the
-   point where the outgoing and incoming colours have equal contrast and the
-   swap costs the least. site.js finds that moment from the seam ramp and
-   applies hysteresis so it cannot flicker. The panel is what carries the
-   sense of motion: it settles over three times as long as the text swaps. */
+/* The bar never fades between its light and dark states, because no fade
+   between light-on-dark and dark-on-light can avoid passing through
+   mid-grey text on a mid-grey field, where contrast falls to nothing.
+   Instead the bar carries a second, inverted copy of itself, clipped to
+   exactly the rows where an ink field sits behind it. The clip edge is
+   driven by scroll position alone, so the wordmark inverts row by row as
+   the section edge travels through it — continuous at any scroll speed,
+   with every pixel showing one state or the other at full strength and
+   never a blend of the two. */
 .site-nav{
   position:fixed;inset:0 0 auto 0;z-index:80;
   height:var(--navh);
   display:flex;align-items:center;
   padding-inline:var(--gut);
   color:var(--ink);
-  transition:background-color .05s linear,color .05s linear,height .5s var(--ease);
+  transition:height .5s var(--ease);
 }
 .site-nav::after{
   content:'';position:absolute;left:0;right:0;bottom:0;height:1px;
   background:var(--hair);
   transform:scaleY(0);transform-origin:bottom;
-  transition:transform .5s var(--ease),background-color .05s linear,opacity .3s var(--ease);
+  transition:transform .5s var(--ease),opacity .3s var(--ease);
 }
 .site-nav.is-stuck{
   background:rgba(250,249,247,.92);
@@ -269,11 +269,46 @@ em{font-style:italic}
   -webkit-backdrop-filter:saturate(150%) blur(16px);
 }
 .site-nav.is-stuck::after{transform:scaleY(1)}
-.site-nav.on-dark{color:var(--snow)}
-.site-nav.on-dark::after{background:var(--hair-d)}
-/* over an ink field the collapsed bar has to be ink too, or it reads as a
-   white slab laid across the black */
-.site-nav.is-stuck.on-dark{background:rgba(11,11,12,.92)}
+/* before the inverted copy exists — first paint, or no script at all — the
+   hero page still needs its light treatment */
+.site-nav.on-dark:not(.has-ghost){color:var(--snow)}
+.site-nav.on-dark:not(.has-ghost)::after{background:var(--hair-d)}
+
+/* the inverted copy: purely presentational, never focusable, never hit */
+/* above .burger's own z-index:3, or the real burger paints over the copy
+   and stays ink against an ink field */
+.nav__ghost{
+  position:absolute;inset:0;z-index:5;
+  display:flex;align-items:center;
+  padding-inline:var(--gut);
+  color:var(--snow);
+  pointer-events:none;
+  clip-path:inset(0 0 100% 0);
+  will-change:clip-path;
+}
+/* the open drawer already forces the bar light, and the copy would only sit
+   on top of it */
+.site-nav.is-open .nav__ghost,
+.site-nav.is-closing .nav__ghost{display:none}
+.site-nav.is-stuck .nav__ghost{
+  background:rgba(11,11,12,.92);
+  backdrop-filter:saturate(150%) blur(16px);
+  -webkit-backdrop-filter:saturate(150%) blur(16px);
+}
+.nav__ghost::after{
+  content:'';position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:var(--hair-d);
+  transform:scaleY(0);transform-origin:bottom;
+  transition:transform .5s var(--ease);
+}
+.site-nav.is-stuck .nav__ghost::after{transform:scaleY(1)}
+/* the drawer is never duplicated, so the ghost keeps no trace of it */
+.nav__ghost .nav__drawer{display:none}
+/* hover feedback has to be mirrored onto the copy, or it vanishes wherever
+   the copy is covering the real bar */
+.nav__ghost .nav__link.is-hover::after{transform:scaleX(1);transform-origin:left}
+.nav__ghost .nav__link.is-hover{opacity:1}
+.nav__ghost .wordmark.is-hover{opacity:.6}
 /* elegant collapse: the bar tightens once you have left the top */
 @media (min-width:900px){
   .site-nav.is-stuck{height:72px}
