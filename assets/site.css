@@ -726,7 +726,8 @@ body.is-ready .hero__media{transform:scale(1.004)}
   letter-spacing:.005em;
   font-variant-numeric:tabular-nums;
 }
-.stat__l{margin-top:var(--s2);max-width:28ch}
+.stat__l{margin-top:var(--s2);max-width:28ch;color:var(--ink-78)}
+.on-ink .stat__l{color:var(--snow-78)}
 .on-ink .stats{background:var(--hair-d)}
 .on-ink .stat{background:var(--ink)}
 
