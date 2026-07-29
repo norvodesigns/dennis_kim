@@ -955,14 +955,21 @@ body.foot-flush .site-foot::before{display:none}
 .foot__l:hover{color:var(--snow)}
 .foot__note{font:300 12px/1.75 var(--sans);letter-spacing:.12em;color:var(--snow-60)}
 .foot__base{
+  position:relative;
   margin-top:clamp(48px,5.4vw,80px);
   padding-top:var(--s4);
   border-top:1px solid var(--hair-d-soft);
-  display:flex;justify-content:space-between;gap:var(--s3);flex-wrap:wrap;
+  display:flex;justify-content:flex-start;gap:var(--s3);flex-wrap:wrap;
 }
-.foot__base .meta{color:var(--snow-40)}
+.foot__base .meta{color:var(--snow-60)}
+.foot__credit{
+  position:absolute;left:50%;top:var(--s4);transform:translateX(-50%);
+}
+@media (max-width:520px){
+  .foot__credit{position:static;transform:none;width:100%;text-align:center}
+}
 .foot__by{
-  position:relative;color:var(--snow-60);
+  position:relative;color:var(--snow-78);
   transition:color var(--t-fast) ease;
 }
 .foot__by::after{
