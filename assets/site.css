@@ -376,8 +376,8 @@ em{font-style:italic}
 }
 .burger span:nth-child(1){top:17px}
 .burger span:nth-child(2){bottom:17px}
-.site-nav.is-open .burger span:nth-child(1){transform:translateY(5px) rotate(45deg)}
-.site-nav.is-open .burger span:nth-child(2){transform:translateY(-5px) rotate(-45deg)}
+.site-nav.is-open .burger span:nth-child(1){transform:translateY(4.25px) rotate(45deg)}
+.site-nav.is-open .burger span:nth-child(2){transform:translateY(-4.25px) rotate(-45deg)}
 
 /* ---------- drawer ---------- */
 /* The ink field lives on a pseudo-element rather than the drawer itself, so
