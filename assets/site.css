@@ -56,10 +56,6 @@
 
   --ease:cubic-bezier(.16,.84,.44,1);
   --ease-soft:cubic-bezier(.32,.72,0,1);
-  /* eases in and out, moves briskly through the middle — used for the
-     header's light/dark swap, where the midpoint is the low-contrast one */
-  --ease-swap:cubic-bezier(.8,0,.2,1);
-  --t-swap:.42s;
   --t-fast:.22s;
   --t-slow:.92s;
 
@@ -245,39 +241,46 @@ em{font-style:italic}
    6. NAV
    ============================================================ */
 /* A frosted panel that inverts between the paper and ink fields.
-   The swap is eased rather than linear: --ease-swap is gentle at both ends
-   and quick through the middle, so the change reads as gradual while the
-   brief moment where light and dark text meet — and contrast is necessarily
-   at its lowest — is passed through quickly. */
+
+   --nd is the bar's darkness, 0 = ink on paper, 1 = snow on ink. It is not
+   a CSS transition: site.js drives it every frame from how dark the page
+   actually is behind the bar, so the swap is tied to scroll position rather
+   than to a clock. A timed fade always runs for its own fixed duration no
+   matter how fast the page is moving, which is what made the change arrive
+   out of step with what you were looking at. Channels are interpolated by
+   hand because a custom property cannot itself hold an interpolatable
+   colour.
+     ink #0b0b0c = 11,11,12       snow #ffffff = 255,255,255              */
 .site-nav{
+  --nd:0;
   position:fixed;inset:0 0 auto 0;z-index:80;
   height:var(--navh);
   display:flex;align-items:center;
   padding-inline:var(--gut);
-  color:var(--ink);
-  transition:background-color var(--t-swap) var(--ease-swap),
-             color var(--t-swap) var(--ease-swap),
-             height .5s var(--ease);
+  color:rgb(calc(11 + 244*var(--nd)),calc(11 + 244*var(--nd)),calc(12 + 243*var(--nd)));
+  transition:height .5s var(--ease);
 }
-.site-nav::after{
-  content:'';position:absolute;left:0;right:0;bottom:0;height:1px;
-  background:var(--hair);
-  transform:scaleY(0);transform-origin:bottom;
-  transition:transform .5s var(--ease),
-             background-color var(--t-swap) var(--ease-swap),
-             opacity .3s var(--ease);
-}
-.site-nav.is-stuck{
-  background:rgba(250,249,247,.92);
+/* the panel is a layer of its own so its colour can track --nd every frame
+   while its arrival is still a gentle fade */
+.site-nav::before{
+  content:'';position:absolute;inset:0;z-index:-1;
+  background:rgb(calc(250 - 239*var(--nd)),calc(249 - 238*var(--nd)),calc(247 - 235*var(--nd)));
+  opacity:0;
   backdrop-filter:saturate(180%) blur(18px);
   -webkit-backdrop-filter:saturate(180%) blur(18px);
+  transition:opacity .34s var(--ease);
+}
+.site-nav.is-stuck::before{opacity:.92}
+.site-nav::after{
+  content:'';position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:rgba(calc(11 + 244*var(--nd)),calc(11 + 244*var(--nd)),calc(12 + 243*var(--nd)),.17);
+  transform:scaleY(0);transform-origin:bottom;
+  transition:transform .5s var(--ease),opacity .3s var(--ease);
 }
 .site-nav.is-stuck::after{transform:scaleY(1)}
-.site-nav.on-dark{color:var(--snow)}
-.site-nav.on-dark::after{background:var(--hair-d)}
-/* over an ink field the panel has to be ink too, or it reads as a white
-   slab laid across the black */
-.site-nav.is-stuck.on-dark{background:rgba(11,11,12,.92)}
+/* no script, no scroll to drive --nd: the hero page keeps its light bar */
+.no-js .site-nav.on-dark{color:var(--snow)}
+.no-js .site-nav.on-dark::after{background:var(--hair-d)}
 /* elegant collapse: the bar tightens once you have left the top */
 @media (min-width:900px){
   .site-nav.is-stuck{height:72px}
@@ -386,6 +389,10 @@ em{font-style:italic}
   opacity:0;
   transition:opacity .42s var(--ease) .30s;
 }
+/* the drawer is an ink field of its own; !important because site.js writes
+   --nd inline every frame and the drawer must win over the scroll position */
+.site-nav.is-open,
+.site-nav.is-closing{--nd:1 !important}
 .site-nav.is-open{color:var(--snow)}
 .site-nav.is-open.is-stuck,
 .site-nav.is-closing.is-stuck{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none}

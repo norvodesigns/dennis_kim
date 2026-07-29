@@ -234,7 +234,6 @@
 
   if (nav) {
     var navH = nav.offsetHeight;
-    var ticking = false;
     // every ink field the bar can pass over: the hero, the dark bands, the footer
     var darkZones = [].slice.call(document.querySelectorAll('.hero, .band, .site-foot'));
 
@@ -273,32 +272,76 @@
       return d;
     }
 
-    /* Swap when the backdrop's own luminance crosses halfway — the moment
-       the outgoing and incoming colours have equal contrast — with a dead
-       band either side so a scroll resting on the boundary cannot flicker. */
-    var isDark = nav.classList.contains('on-dark');
-
-    function syncNav() {
-      ticking = false;
-      var y = window.scrollY || window.pageYOffset;
-      var nd = darknessAt(navH * 0.55, seamProbe.offsetHeight || 120);
-
-      if (isDark && nd < 0.42) isDark = false;
-      else if (!isDark && nd > 0.58) isDark = true;
-      nav.classList.toggle('on-dark', isDark);
-
-      /* The bar sits bare only at the very top, where it reads as part of
-         the hero. The moment the page moves it takes a field, over the hero
-         too — without one, the hero's own type scrolls underneath the
-         wordmark and the two collide. */
-      nav.classList.toggle('is-stuck', y > 8);
+    /* Smootherstep. Its first and second derivatives are both zero at each
+       end, so the change starts and stops imperceptibly — which is what
+       makes it feel gradual — while its steeper middle carries the bar
+       quickly through the one moment where light and dark text cross and
+       contrast unavoidably bottoms out. Better than smoothstep on both
+       counts, not a trade between them. */
+    function shape(t) {
+      return t * t * t * (t * (t * 6 - 15) + 10);
     }
-    function onScroll() {
-      if (!ticking) { ticking = true; requestAnimationFrame(syncNav); }
+
+    /* While the page is moving the bar re-reads its own state every frame
+       rather than waiting to be told. `scrollY` is correct on every frame
+       even when scroll EVENTS are being coalesced — which is exactly what
+       iOS does during momentum — so reading it directly is what keeps the
+       bar in step with the page at any speed. Reacting to the events
+       instead is what let the change arrive late and land as a jolt.
+
+       ndNow then chases the freshly measured target with a short time
+       constant. During a scroll the target is already smooth in position,
+       so the chase barely does anything; its job is to turn a genuine jump
+       — an anchor link, a restored scroll position — into a glide. */
+    var ndNow = darknessAt(navH * 0.55, seamProbe.offsetHeight || 120);
+    var CHASE = 0.34;        // approach per 16.7ms frame, ~40ms time constant
+    var MIN_MS = 460;       // the swap may never complete faster than this
+    var IDLE_MS = 420;       // keep reading this long after movement stops
+    var rafId = 0, lastMove = 0, lastT = 0;
+
+    function paint(nd) {
+      nav.style.setProperty('--nd', shape(nd).toFixed(4));
+      // still exposed as a class, for focus outlines
+      nav.classList.toggle('on-dark', nd > 0.5);
     }
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', function () { navH = nav.offsetHeight; syncNav(); });
-    syncNav();
+
+    function frame(ts) {
+      rafId = 0;
+      var dt = lastT ? Math.min(ts - lastT, 64) : 16.7;
+      lastT = ts;
+
+      var target = darknessAt(navH * 0.55, seamProbe.offsetHeight || 120);
+      var f = 1 - Math.pow(1 - CHASE, dt / 16.7);
+      var step = (target - ndNow) * f;
+      /* Cap how far the bar may travel in one frame. Below the cap this
+         does nothing and the bar simply tracks the page. Above it — a hard
+         fling, where the seam passes in a couple of frames — the change is
+         spread over MIN_MS instead of snapping, so a fast scroll still
+         reads as a swap rather than a jump cut. */
+      var cap = dt / MIN_MS;
+      if (step > cap) step = cap;
+      else if (step < -cap) step = -cap;
+      ndNow += step;
+      if (Math.abs(target - ndNow) < 0.0015) ndNow = target;
+      paint(ndNow);
+
+      nav.classList.toggle('is-stuck', (window.scrollY || window.pageYOffset) > 8);
+
+      var settled = ndNow === target && (ts - lastMove) > IDLE_MS;
+      if (!settled) rafId = requestAnimationFrame(frame);
+      else lastT = 0;
+    }
+
+    function kick() {
+      lastMove = performance.now();
+      if (!rafId) { lastT = 0; rafId = requestAnimationFrame(frame); }
+    }
+
+
+    window.addEventListener('scroll', kick, { passive: true });
+    window.addEventListener('resize', function () { navH = nav.offsetHeight; kick(); });
+    paint(ndNow);   // the bar has a state before the first scroll ever happens
+    kick();
   }
 
   /* ---------- 5. mobile drawer ----------
