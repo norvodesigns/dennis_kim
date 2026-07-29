@@ -418,7 +418,7 @@ em{font-style:italic}
   opacity:0;
   transition:opacity .42s var(--ease) .30s;
 }
-.site-nav.is-open{color:var(--snow)}
+.site-nav.is-open,.site-nav.is-closing{color:var(--snow)}
 .site-nav.is-open.is-stuck,
 .site-nav.is-closing.is-stuck{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none}
 .site-nav.is-open::after,.site-nav.is-closing::after{opacity:0}
