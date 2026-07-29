@@ -130,6 +130,7 @@ main:focus{outline:none}
   color:var(--label);
 }
 .eyebrow--light{color:var(--label-d)}
+.eyebrow--lg{font-size:clamp(13px,1.4vw,16px);letter-spacing:.2em}
 
 /* display face — Didone, high contrast, set tight and large */
 .display{
