@@ -718,7 +718,17 @@ a.row{color:inherit;text-decoration:none}
   font-style:normal;font-family:var(--sans);font-weight:300;
   font-size:clamp(12px,1vw,13.5px);letter-spacing:.24em;text-transform:uppercase;
   color:var(--snow-60);
+  transition:color var(--t-fast) ease;
 }
+/* when the row is the link to the full list, it says so and behaves like one */
+.credit--more .credit__t i{
+  font-style:normal;display:inline-block;margin-left:.5em;
+  transform:translateX(-4px);
+  transition:transform .5s var(--ease);
+}
+a.credit--more:hover .credit__t,
+a.credit--more:focus-visible .credit__t{color:var(--snow)}
+a.credit--more:hover .credit__t i{transform:none}
 @media (max-width:640px){
   .credit{flex-direction:column;gap:var(--s1)}
   .credit__m{text-align:left}
