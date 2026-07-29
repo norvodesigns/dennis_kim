@@ -390,13 +390,10 @@ em{font-style:italic}
   opacity:0;
   transition:opacity .42s var(--ease) .30s;
 }
-/* the drawer is an ink field of its own; !important because site.js writes
-   --nd inline every frame and the drawer must win over the scroll position */
-.site-nav.is-open,
-.site-nav.is-closing{--nd:1 !important}
-.site-nav.is-open{color:var(--snow)}
-.site-nav.is-open.is-stuck,
-.site-nav.is-closing.is-stuck{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none}
+/* The drawer is an ink field like any other, so site.js simply folds its
+   backdrop's live opacity into the bar's darkness. Pinning --nd here
+   instead would hold the bar dark for the whole exit and then drop it in
+   one step at the end, which is what made the close feel like a trick. */
 .site-nav.is-open::after,.site-nav.is-closing::after{opacity:0}
 
 .drawer__inner{

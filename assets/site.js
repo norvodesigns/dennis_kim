@@ -7,6 +7,8 @@
 
   var body = document.body;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  // lets the drawer wake the header's own loop; assigned once the nav is set up
+  var navKick = null;
 
   /* ---------- 1. page enter ---------- */
   function ready() {
@@ -305,12 +307,30 @@
       nav.classList.toggle('on-dark', nd > 0.5);
     }
 
+    var drawerEl = nav.querySelector('.nav__drawer');
+    var stuckHeld = false;
+
+    /* The drawer is an ink field too, so its backdrop's live opacity folds
+       straight into the bar's darkness. While it is open that is 1 and the
+       bar reads white; as it fades out the bar returns to whatever the page
+       behind it calls for, in step with the fade rather than in one step
+       once the drawer has gone. */
+    function drawerDarkness() {
+      if (!drawerEl) return 0;
+      var cls = nav.className;
+      if (cls.indexOf('is-open') < 0 && cls.indexOf('is-closing') < 0) return 0;
+      var o = parseFloat(getComputedStyle(drawerEl, '::before').opacity);
+      return isNaN(o) ? 0 : o;
+    }
+
     function frame(ts) {
       rafId = 0;
       var dt = lastT ? Math.min(ts - lastT, 64) : 16.7;
       lastT = ts;
 
-      var target = darknessAt(navH * 0.55, seamProbe.offsetHeight || 120);
+      var page = darknessAt(navH * 0.55, seamProbe.offsetHeight || 120);
+      var drawer = drawerDarkness();
+      var target = drawer > page ? drawer : page;
       var f = 1 - Math.pow(1 - CHASE, dt / 16.7);
       var step = (target - ndNow) * f;
       /* Cap how far the bar may travel in one frame. Below the cap this
@@ -325,9 +345,18 @@
       if (Math.abs(target - ndNow) < 0.0015) ndNow = target;
       paint(ndNow);
 
-      nav.classList.toggle('is-stuck', (window.scrollY || window.pageYOffset) > 8);
+      /* Freeze the panel's presence while the drawer is up. Toggling
+         body overflow can make a frame read scrollY as 0, which would drop
+         .is-stuck, fade the panel out and fade it back — the header
+         vanishing for an instant on close. Hold the value it had instead. */
+      var busy = nav.className.indexOf('is-open') > -1 || nav.className.indexOf('is-closing') > -1;
+      if (busy) nav.classList.toggle('is-stuck', stuckHeld);
+      else {
+        stuckHeld = (window.scrollY || window.pageYOffset) > 8;
+        nav.classList.toggle('is-stuck', stuckHeld);
+      }
 
-      var settled = ndNow === target && (ts - lastMove) > IDLE_MS;
+      var settled = ndNow === target && !busy && (ts - lastMove) > IDLE_MS;
       if (!settled) rafId = requestAnimationFrame(frame);
       else lastT = 0;
     }
@@ -341,6 +370,8 @@
     window.addEventListener('scroll', kick, { passive: true });
     window.addEventListener('resize', function () { navH = nav.offsetHeight; kick(); });
     paint(ndNow);   // the bar has a state before the first scroll ever happens
+    stuckHeld = (window.scrollY || window.pageYOffset) > 8;
+    navKick = kick;   // the drawer needs to wake this loop when it opens
     kick();
   }
 
@@ -415,6 +446,7 @@
 
       nav.classList.add('is-open');
       body.classList.add('nav-open');
+      if (navKick) navKick();   // the bar tracks the drawer's own fade
       burger.setAttribute('aria-expanded', 'true');
       if (drawer) drawer.setAttribute('aria-hidden', 'false');
 
@@ -435,6 +467,7 @@
 
       nav.classList.add('is-closing');
       nav.classList.remove('is-open');
+      if (navKick) navKick();   // keep the bar following the drawer out
       burger.setAttribute('aria-expanded', 'false');
       if (drawer) drawer.setAttribute('aria-hidden', 'true');
 
@@ -445,6 +478,7 @@
       clearTimeout(closeTimer);
       closeTimer = setTimeout(function () {
         nav.classList.remove('is-closing');
+        if (navKick) navKick();
         if (drwMark) {
           drwMark.style.transition = 'none';
           drwMark.style.transform = 'none';
