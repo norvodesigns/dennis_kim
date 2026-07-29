@@ -249,86 +249,43 @@
     // short synthetic ramp of its own rather than letting it snap
     var HERO_RAMP = 84;
 
-    /* Where an ink field's backdrop crosses half darkness.
-       The seam follows a smoothstep, and smoothstep(t) = 0.5 at t = 0.5, so
-       the crossing sits exactly half a ramp beyond the field's own edge.
-       Solving for it directly beats sampling the bar row by row, and it is
-       sub-pixel accurate rather than quantised to whole rows. */
-    function darkEdges(el, seam) {
-      var r = el.getBoundingClientRect();
-      if (!r.height) return null;
-      var half = (el.classList.contains('hero') ? HERO_RAMP : seam) / 2;
-      return { top: r.top - half, bottom: r.bottom + half };
+    function smooth(t) {
+      t = t < 0 ? 0 : t > 1 ? 1 : t;
+      return t * t * (3 - 2 * t);
     }
 
-    /* The inverted copy of the bar. Cloned rather than authored into every
-       page so the two can never fall out of step, stripped of the drawer,
-       and made unreachable to the keyboard and to hit-testing. */
-    var ghost = null, ghostLinks = [], realLinks = [];
-    function buildGhost() {
-      var inner = nav.querySelector('.nav__inner');
-      if (!inner) return;
-      ghost = document.createElement('div');
-      ghost.className = 'nav__ghost';
-      ghost.setAttribute('aria-hidden', 'true');
-      var copy = inner.cloneNode(true);
-      var drawer = copy.querySelector('.nav__drawer');
-      if (drawer) drawer.parentNode.removeChild(drawer);
-      copy.removeAttribute('id');
-      [].slice.call(copy.querySelectorAll('[id]')).forEach(function (n) { n.removeAttribute('id'); });
-      [].slice.call(copy.querySelectorAll('a,button,input,[tabindex]')).forEach(function (n) {
-        n.setAttribute('tabindex', '-1');
-      });
-      ghost.appendChild(copy);
-      nav.appendChild(ghost);
-      nav.classList.add('has-ghost');
-
-      ghostLinks = [].slice.call(ghost.querySelectorAll('.nav__link, .wordmark'));
-      realLinks = [].slice.call(inner.querySelectorAll('.nav__link, .wordmark'));
-      realLinks.forEach(function (el, i) {
-        el.addEventListener('mouseenter', function () {
-          if (ghostLinks[i]) ghostLinks[i].classList.add('is-hover');
-        });
-        el.addEventListener('mouseleave', function () {
-          if (ghostLinks[i]) ghostLinks[i].classList.remove('is-hover');
-        });
-      });
+    /* How dark the backdrop is at viewport height `y`: 1 inside an ink
+       field, easing to 0 across that field's seam. Sampled at one line, so
+       this is a handful of reads per frame. */
+    function darknessAt(y, seam) {
+      var d = 0;
+      for (var i = 0; i < darkZones.length; i++) {
+        var el = darkZones[i];
+        var r = el.getBoundingClientRect();
+        if (!r.height) continue;
+        var ramp = el.classList.contains('hero') ? HERO_RAMP : seam;
+        var v;
+        if (y >= r.top && y <= r.bottom) v = 1;
+        else if (y < r.top) v = smooth(1 - (r.top - y) / ramp);
+        else v = smooth(1 - (y - r.bottom) / ramp);
+        if (v > d) d = v;
+      }
+      return d;
     }
-    buildGhost();
+
+    /* Swap when the backdrop's own luminance crosses halfway — the moment
+       the outgoing and incoming colours have equal contrast — with a dead
+       band either side so a scroll resting on the boundary cannot flicker. */
+    var isDark = nav.classList.contains('on-dark');
 
     function syncNav() {
       ticking = false;
       var y = window.scrollY || window.pageYOffset;
-      var seam = seamProbe.offsetHeight || 120;
-      var r = nav.getBoundingClientRect();
-      var H = r.height;
+      var nd = darknessAt(navH * 0.55, seamProbe.offsetHeight || 120);
 
-      /* The span of the bar sitting over ink, as a single interval. That is
-         exactly what the inverted copy is clipped to, and it moves with
-         scroll position alone — no timing, so it behaves identically
-         however fast the page is moving. */
-      var lo = Infinity, hi = -Infinity;
-      for (var i = 0; i < darkZones.length; i++) {
-        var e = darkEdges(darkZones[i], seam);
-        if (!e || e.bottom <= r.top || e.top >= r.bottom) continue;
-        if (e.top < lo) lo = e.top;
-        if (e.bottom > hi) hi = e.bottom;
-      }
-
-      var covered = 0;
-      if (ghost) {
-        if (lo === Infinity) {
-          ghost.style.clipPath = 'inset(0 0 100% 0)';
-        } else {
-          var top = Math.max(0, lo - r.top);
-          var bottom = Math.max(0, r.bottom - hi);
-          covered = H - top - bottom;
-          ghost.style.clipPath =
-            'inset(' + top.toFixed(2) + 'px 0 ' + bottom.toFixed(2) + 'px 0)';
-        }
-      }
-      // kept for focus outlines: true once the bar is mostly over ink
-      nav.classList.toggle('on-dark', covered > H * 0.5);
+      if (isDark && nd < 0.42) isDark = false;
+      else if (!isDark && nd > 0.58) isDark = true;
+      nav.classList.toggle('on-dark', isDark);
 
       /* The bar sits bare only at the very top, where it reads as part of
          the hero. The moment the page moves it takes a field, over the hero
