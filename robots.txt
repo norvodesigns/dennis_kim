@@ -5,4 +5,4 @@ Allow: /
 Disallow: /Dennis_Kim_Source_of_Truth.md
 Disallow: /Mr.%20Kim%20pictures/
 
-Sitemap: https://norvodesigns.github.io/dennis_kim/sitemap.xml
+Sitemap: https://denniskim.org/sitemap.xml
