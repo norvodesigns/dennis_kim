@@ -769,7 +769,8 @@ a.credit--more:hover .credit__t i{transform:none}
 
 /* --- gateway cards --- */
 .gates{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--hair)}
-@media (max-width:860px){.gates{grid-template-columns:1fr}}
+.gates--2{grid-template-columns:repeat(2,1fr)}
+@media (max-width:860px){.gates,.gates--2{grid-template-columns:1fr}}
 .gate{
   position:relative;display:block;
   padding:clamp(24px,2.2vw,32px) clamp(20px,2vw,32px) clamp(26px,2.6vw,36px);
@@ -796,7 +797,18 @@ a.credit--more:hover .credit__t i{transform:none}
   transition:transform .55s var(--ease),opacity .55s var(--ease);
 }
 .gate:hover .gate__t i,.gate:focus-visible .gate__t i{transform:none;opacity:.6}
-.gate__d{margin-top:var(--s2);font:400 15.5px/1.6 var(--text);color:var(--ink-78);max-width:32ch}
+/* block, or the margin and measure below are silently ignored and anything
+   following it runs onto the same line */
+.gate__d{display:block;margin-top:var(--s2);font:400 15.5px/1.6 var(--text);color:var(--ink-78);max-width:32ch}
+/* a card that leaves the site names where it goes, and keeps saying so
+   when nobody is hovering it */
+.gate__cta{
+  display:inline-block;margin-top:clamp(20px,2.4vw,32px);
+  padding-bottom:6px;border-bottom:1px solid var(--ink-40);
+  color:var(--ink);
+  transition:border-color var(--t-fast) ease;
+}
+.gate:hover .gate__cta,.gate:focus-visible .gate__cta{border-bottom-color:var(--ink)}
 
 /* --- dark band --- */
 /* the vertical margin guarantees clear paper for the seams to blend over,
