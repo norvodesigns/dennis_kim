@@ -873,6 +873,10 @@ body.foot-flush .page{padding-bottom:0}
 .on-ink .fig--held::before{background:var(--snow)}
 
 /* --- video embeds --- */
+.videos{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:clamp(32px,4vw,64px);
+}
 .video__frame{
   position:relative;aspect-ratio:16/9;overflow:hidden;
   background:var(--ink);
