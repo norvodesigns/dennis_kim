@@ -630,6 +630,22 @@ body.is-ready .hero__media{transform:scale(1.004)}
 .ln:hover::after{transform:scaleX(1);transform-origin:left}
 .on-ink .ln::before,.site-foot .ln::before{background:var(--snow-40)}
 
+/* --- inline links inside prose ---
+   Underlined at rest. A link that only reveals itself under the cursor is one
+   a reader scanning the page never finds, and one a touch screen never shows
+   at all. The rule sits below the baseline so descenders stay legible. */
+.body a,.lede a{
+  color:inherit;
+  text-decoration:underline;
+  text-decoration-thickness:1px;
+  text-underline-offset:.18em;
+  text-decoration-color:var(--ink-40);
+  transition:text-decoration-color var(--t-fast) ease,color var(--t-fast) ease;
+}
+.body a:hover,.lede a:hover{color:var(--ink);text-decoration-color:var(--ink)}
+.on-ink .body a,.on-ink .lede a{text-decoration-color:var(--snow-40)}
+.on-ink .body a:hover,.on-ink .lede a:hover{color:var(--snow);text-decoration-color:var(--snow)}
+
 /* --- index rows --- */
 .rows{border-top:1px solid var(--hair)}
 .row{
@@ -642,8 +658,20 @@ body.is-ready .hero__media{transform:scale(1.004)}
   transition:padding-left .45s var(--ease);
 }
 .rows--hover .row:hover{padding-left:var(--s2)}
-/* a row can be the link itself */
+/* a row can be the link itself — and then it has to say so, or it reads as
+   another line in a list. The arrow is there at rest and leans in on hover. */
 a.row{color:inherit;text-decoration:none}
+a.row .row__t::after{
+  content:'\2192';
+  display:inline-block;
+  /* the margin resolves against this element's own half-size font, so it is
+     stated at double the gap actually wanted */
+  margin-left:1.2em;
+  font-family:var(--sans);font-size:.5em;font-style:normal;
+  opacity:.45;transform:translateX(-5px);
+  transition:transform .5s var(--ease),opacity .5s var(--ease);
+}
+a.row:hover .row__t::after,a.row:focus-visible .row__t::after{transform:none;opacity:.7}
 @media (max-width:820px){
   .row{grid-template-columns:1fr;gap:var(--s05);padding-block:var(--s3)}
 }
