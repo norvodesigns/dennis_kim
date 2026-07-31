@@ -1,8 +1,8 @@
 User-agent: *
 Allow: /
 
-# Working files kept in the repository but not part of the published site
-Disallow: /Dennis_Kim_Source_of_Truth.md
+# Original unedited source photographs: published by the host, but not
+# part of the site and not worth crawling
 Disallow: /Mr.%20Kim%20pictures/
 
 Sitemap: https://denniskim.org/sitemap.xml
