@@ -9,13 +9,14 @@
      Analytics → Admin → Data streams → Web → "Measurement ID".
      It always looks like G-XXXXXXXXXX. This is the only line
      that needs editing to switch, disable or replace the property. */
-  var MEASUREMENT_ID = 'G-XXXXXXXXXX';
+  var MEASUREMENT_ID = 'G-VGMKHTKGK2';
 
-  /* Until a real id is pasted in above, do nothing at all. Loading
-     gtag.js with the placeholder would fetch a 404 on every page view
-     and log a console error, so an unconfigured site stays silent
-     rather than noisy. The placeholder is spelled out on its own: it is
-     all letters and digits, so a shape test alone would let it through. */
+  /* If the id is ever cleared back to the placeholder, or mistyped, do
+     nothing at all: loading gtag.js with a bad id fetches a 404 on every
+     page view and logs a console error, so a misconfigured site stays
+     silent rather than noisy. The placeholder is spelled out on its own
+     because it is all letters and digits — a shape test alone would let
+     it through. */
   var PLACEHOLDER = 'G-' + 'XXXXXXXXXX';
   if (MEASUREMENT_ID === PLACEHOLDER) return;
   if (!/^G-[A-Z0-9]{6,}$/.test(MEASUREMENT_ID)) return;
