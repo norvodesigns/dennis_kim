@@ -120,6 +120,19 @@ body::after{
 .skip:focus{transform:none}
 main:focus{outline:none}
 
+/* Available to screen readers and to search engines, but never drawn.
+   Used inside headings whose visible wording is a design phrase, so the
+   heading still names its subject. Kept out of the flow with clip-path
+   rather than display:none, which assistive technology would skip. */
+.vh{
+  position:absolute;
+  width:1px;height:1px;
+  margin:-1px;padding:0;border:0;
+  overflow:hidden;
+  clip-path:inset(50%);
+  white-space:nowrap;
+}
+
 /* ============================================================
    3. TYPE
    ============================================================ */
