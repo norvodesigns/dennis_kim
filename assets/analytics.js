@@ -9,7 +9,7 @@
      Analytics → Admin → Data streams → Web → "Measurement ID".
      It always looks like G-XXXXXXXXXX. This is the only line
      that needs editing to switch, disable or replace the property. */
-  var MEASUREMENT_ID = 'G-VGMKHTKGK2';
+  var MEASUREMENT_ID = 'G-ZF6RB4G2XK';
 
   /* If the id is ever cleared back to the placeholder, or mistyped, do
      nothing at all: loading gtag.js with a bad id fetches a 404 on every
